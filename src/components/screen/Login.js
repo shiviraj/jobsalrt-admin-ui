@@ -56,7 +56,10 @@ const Login = () => {
   const handleSubmit = (e) => {
     e.preventDefault();
     fetchApi({type: 'SIGN_IN', payload: {email, password}})
-      .then((u) => history.push('/'))
+      .then((u) => {
+        localStorage.setItem("token", JSON.stringify(u))
+        history.push('/')
+      })
       .catch(() => setError('Something went wrong, try again!!'));
   };
 

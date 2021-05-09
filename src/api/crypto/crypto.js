@@ -3,23 +3,36 @@ import crypto from "crypto";
 const algorithm = 'aes-256-ctr';
 const iv = crypto.randomBytes(16);
 
-const getSecretKey = () => {
-  return "defaultsecretkeydefaultsecretkey"
+const getSecretKey = (defaultToken = false) => {
+  if (defaultToken)
+    return "defaultsecretkeydefaultsecretkey"
+  const token = JSON.parse(localStorage.getItem("token"))
+  console.log(token, "token")
+  return token.token.slice(0, 32)
 };
 
-const encrypt = (text) => {
-  const secretKey = getSecretKey()
-  const cipher = crypto.createCipheriv(algorithm, secretKey, iv);
-  const encrypted = Buffer.concat([cipher.update(text), cipher.final()]);
-  return encrypted.toString('hex')
+const encrypt = (text, defaultToken, encryptionEnable) => {
+  if (encryptionEnable) {
+    const secretKey = getSecretKey(defaultToken)
+    const cipher = crypto.createCipheriv(algorithm, secretKey, iv);
+    const encrypted = Buffer.concat([cipher.update(text), cipher.final()]);
+    return encrypted.toString('hex')
+  }
+  return text
 };
 
-const decrypt = (content) => {
-  const secretKey = getSecretKey()
-  const decipher = crypto.createDecipheriv(algorithm, secretKey, Buffer.from(iv, 'hex'));
-  const decrypted = Buffer.concat([decipher.update(Buffer.from(content, 'hex')), decipher.final()]);
-  return decrypted.toString();
-};
+const decrypt = (content, encryption, defaultToken) => {
+    console.log(content, encryption, defaultToken)
+    if (encryption) {
+      const secretKey = getSecretKey(defaultToken)
+      console.log(secretKey)
+      const decipher = crypto.createDecipheriv(algorithm, secretKey, iv);
+      const decrypted = Buffer.concat([decipher.update(Buffer.from(content, 'hex')), decipher.final()]);
+      return decrypted.toString();
+    }
+    return content
+  }
+;
 
 export {encrypt, decrypt, iv} ;
 
