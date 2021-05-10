@@ -15,6 +15,7 @@ const AuthRouteWithUser = ({user, setUser, Component, ...rest}) => {
       })
       .catch(() => {
         setIsLoading(false)
+        setUser(null)
         history.push("/login")
       })
   }, [])

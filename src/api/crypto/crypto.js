@@ -7,7 +7,6 @@ const getSecretKey = (defaultToken = false) => {
   if (defaultToken)
     return "defaultsecretkeydefaultsecretkey"
   const token = JSON.parse(localStorage.getItem("token"))
-  console.log(token, "token")
   return token.token.slice(0, 32)
 };
 
@@ -22,7 +21,6 @@ const encrypt = (text, defaultToken, encryptionEnable) => {
 };
 
 const decrypt = (content, encryption, defaultToken) => {
-    console.log(content, encryption, defaultToken)
     if (encryption) {
       const secretKey = getSecretKey(defaultToken)
       console.log(secretKey)

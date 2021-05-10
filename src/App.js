@@ -4,6 +4,7 @@ import UserContext from './context/UserContext';
 import {ThemeProvider} from '@material-ui/core/styles';
 import theme from './theme/theme';
 import AppRoutes from "./routes/AppRoutes";
+import Header from "./components/includes/Header";
 
 const AppRoute = () => {
   const [user, setUser] = useState(null);
@@ -12,6 +13,7 @@ const AppRoute = () => {
     <UserContext.Provider value={{user, setUser}}>
       <ThemeProvider theme={theme}>
         <Router>
+          {user && <Header/>}
           <AppRoutes/>
         </Router>
       </ThemeProvider>

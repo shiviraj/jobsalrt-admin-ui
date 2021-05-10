@@ -30,6 +30,8 @@ const fetchApi = (action) => {
       return fetchPost('/api/user/sign-in', action.payload, true);
     case 'GET_USER':
       return fetchGet('/api/user');
+    case 'GET_POSTS':
+      return fetchGet(`/api/posts/page/${action.payload.page}`);
     default:
       return new Promise((_res, reject) => reject());
   }
