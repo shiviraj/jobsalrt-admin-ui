@@ -20,17 +20,34 @@ const Posts = () => {
   const classes = useStyles()
   const [posts, setPosts] = useState([])
   const [page, setPage] = useState(1)
+  const [pageCount, setPageCount] = useState(null)
+  const [filters, setFilters] = useState({})
+
+
+  const getSelectedFilters = () => {
+    return Object.keys(filters).reduce((selectedFilters, keyName) => {
+      selectedFilters[keyName] = filters[keyName].map(opt => opt.value)
+      return selectedFilters
+    }, {});
+  };
 
   useEffect(() => {
-    fetchApi({type: "GET_POSTS", payload: {page}})
+    fetchApi({type: "GET_POSTS_PAGE_COUNT", payload: {filters: getSelectedFilters()}})
+      .then(p => setPageCount(p))
+      .catch(e => {
+      })
+  }, [filters])
+
+  useEffect(() => {
+    fetchApi({type: "GET_POSTS", payload: {page, filters: getSelectedFilters()}})
       .then(p => setPosts(p))
       .catch(e => {
       })
-  }, [page])
+  }, [page, filters])
 
   return <div className={classes.root}>
-    <PostContainer posts={posts} page={page} setPage={setPage} totalPages={10}/>
-    <FilterContainer/>
+    {pageCount && <PostContainer posts={posts} page={page} setPage={setPage} count={pageCount}/>}
+    <FilterContainer applyFilter={setFilters}/>
   </div>
 }
 

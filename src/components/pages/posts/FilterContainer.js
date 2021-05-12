@@ -1,4 +1,4 @@
-import React, {useState} from "react";
+import React, {useEffect, useState} from "react";
 import {makeStyles} from "@material-ui/core/styles";
 import {Button, Chip, Divider, Typography} from "@material-ui/core";
 import FilterOptions from "./FilterOptions";
@@ -29,12 +29,12 @@ const SelectedOptions = ({filters, classes, onclick}) => {
 };
 
 
-const FilterContainer = () => {
+const FilterContainer = ({applyFilter}) => {
   const classes = useStyles()
   const [filters, setFilters] = useState({
     status: [
       {name: "Verified", value: "VERIFIED", checked: false},
-      {name: "Not Verified", value: "NOT_VERIFIED", checked: true},
+      {name: "Not Verified", value: "NOT_VERIFIED", checked: false},
       {name: "Disabled", value: "DISABLED", checked: false}
     ],
     formType: [
@@ -50,6 +50,15 @@ const FilterContainer = () => {
     ],
   })
 
+  const getSelectedFilters = () => {
+    return Object.keys(filters).reduce((selectedFilters, keyName) => {
+        selectedFilters[keyName] = filters[keyName].filter(option => option.checked)
+        return selectedFilters
+      }, {}
+    )
+  }
+
+
   const handleChange = (key, value) => {
     const clickedOption = filters[key].find(obj => obj.value === value);
     clickedOption.checked = !clickedOption.checked
@@ -57,13 +66,16 @@ const FilterContainer = () => {
   }
 
   const handleClearAll = () => {
-    Object.keys(filters).forEach(keyName => {
-        const values = filters[keyName].filter(option => option.checked)
-        values.forEach(opt => handleChange(keyName, opt.value))
+    const selectedFilters = getSelectedFilters();
+    Object.keys(selectedFilters).forEach(keyName => {
+        selectedFilters[keyName].forEach(opt => handleChange(keyName, opt.value))
       }
     )
   }
 
+  useEffect(() => {
+    applyFilter(getSelectedFilters())
+  }, [filters])
 
   return <div className={classes.root}>
     <div>

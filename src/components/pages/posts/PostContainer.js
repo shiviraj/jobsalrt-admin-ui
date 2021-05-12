@@ -2,7 +2,7 @@ import React from "react";
 import {Divider, Typography} from "@material-ui/core";
 import Post from "./Post";
 import {makeStyles} from "@material-ui/core/styles";
-import {Pagination} from '@material-ui/lab'
+import Pagination from "../../utils/Pagination";
 
 
 const useStyles = makeStyles(theme => ({
@@ -36,23 +36,24 @@ const useStyles = makeStyles(theme => ({
   }
 }));
 
-const PostContainer = ({posts, page, setPage, totalPages}) => {
+const PostContainer = ({posts, page, setPage, count}) => {
+  const limit = 48
   const classes = useStyles()
+  const start = (page - 1) * limit + 1;
+  const end = (page * limit) > count.totalPost ? count.totalPost : page * limit;
   return <div className={classes.root}>
     <div className={classes.titleContainer}>
       <Typography variant="h4">All Posts</Typography>
-      <Typography variant="subtitle1" className={classes.postCounts}>(Showing 1-50 posts of 250 posts)</Typography>
+      <Typography variant="subtitle1"
+                  className={classes.postCounts}>(Showing {start} - {end} posts of {count.totalPost} posts)</Typography>
     </div>
     <div className={classes.postContainer}>
       {posts.map((post, index) => <Post post={post} key={`${post.source}_${index}`}/>)}
     </div>
     <Divider/>
     <div className={classes.paginationContainer}>
-      <Typography variant="subtitle1">Page {page} of {totalPages}</Typography>
-      <Pagination count={10} page={page}
-                  color="primary"
-                  onChange={(e, page) => setPage(page)} showFirstButton
-                  showLastButton/>
+      <Typography variant="subtitle1">Page {page} of {count.page}</Typography>
+      <Pagination count={count.page} page={page} onChange={(e, page) => setPage(page)}/>
       <div>-</div>
     </div>
   </div>
