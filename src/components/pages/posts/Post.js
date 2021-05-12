@@ -1,9 +1,8 @@
 import React from 'react'
-import {Box, Typography} from "@material-ui/core";
+import {Box, Button, Typography} from "@material-ui/core";
 import {makeStyles} from "@material-ui/core/styles";
-import theme from "../../theme/theme";
 
-const useStyles = makeStyles({
+const useStyles = makeStyles(theme => ({
   root: {
     backgroundColor: theme.palette.grey[100],
     width: theme.spacing(40),
@@ -12,8 +11,20 @@ const useStyles = makeStyles({
     flexDirection: "column",
     justifyContent: "space-between",
     '&:hover': {
-      boxShadow:theme.shadows[1],
-      backgroundColor: theme.palette.common.white,
+      boxShadow: theme.shadows[4],
+      backgroundColor: theme.palette.grey[400]
+    }
+  },
+  error: {
+    backgroundColor: theme.palette.error.light,
+    '&:hover': {
+      backgroundColor: theme.palette.error.main,
+    }
+  },
+  success: {
+    backgroundColor: theme.palette.success.light,
+    '&:hover': {
+      backgroundColor: theme.palette.success.main,
     }
   },
   logoContainer: {
@@ -31,11 +42,22 @@ const useStyles = makeStyles({
     width: theme.spacing(8),
     border: `2px solid ${theme.palette.primary.dark}`
   },
-});
+  buttonContainer:{
+    display:"flex",
+    justifyContent:"center"
+  }
+}));
+
 
 const Post = ({post}) => {
   const classes = useStyles()
-  return <Box m={0.5} p={1} className={classes.root}>
+  const boxBackground = {
+    NOT_VERIFIED: classes.error,
+    VERIFIED: classes.success,
+    DISABLED: classes.disabled
+  }
+
+  return <Box m={0.5} p={1} className={`${classes.root} ${boxBackground[post.status]}`}>
     <div>
       <Typography variant="h6" className={classes.title}>{post.name}</Typography>
     </div>
@@ -44,7 +66,7 @@ const Post = ({post}) => {
     </div>
     <div>
       {post.advtNo && <Typography variant="body1"><b>Advt No :</b> &nbsp; {post.advtNo} </Typography>}
-      <Typography variant="body1"><b>Form Type :</b> &nbsp; {post.formTye} </Typography>
+      <Typography variant="body1"><b>Form Type :</b> &nbsp; {post.formType} </Typography>
       {post.lastDate && <Typography variant="body1"><b>Last Date :</b> &nbsp; {post.lastDate} </Typography>}
       {post.company && <Typography variant="body1"><b>Company :</b> &nbsp; {post.company} </Typography>}
       {post.totalVacancies && <Typography variant="body1"><b>Vacancy :</b> &nbsp; {post.totalVacancies} </Typography>}
@@ -56,7 +78,11 @@ const Post = ({post}) => {
       {post.postUpdateDate &&
       <Typography variant="body1"><b>Post Update Date :</b> &nbsp; {post.postUpdateDate} </Typography>}
       <Typography variant="body1"><b>Total Views :</b> &nbsp; {post.totalViews} </Typography>
+      <div className={classes.buttonContainer}>
+        <Button variant="contained" color="primary" component="a" href={`/post/${post.url}`}>Edit</Button>
+      </div>
     </div>
+
   </Box>
 }
 

@@ -1,14 +1,24 @@
 import React from 'react';
 import {makeStyles} from '@material-ui/core/styles';
-import Tabs from '@material-ui/core/Tabs';
-import Tab from '@material-ui/core/Tab';
 import theme from "../../../theme/theme";
-import {Box} from "@material-ui/core";
+import {ListItem, ListItemText} from "@material-ui/core";
 import {NavLink} from "react-router-dom";
 
 const useStyles = makeStyles({
   root: {
-    backgroundColor: theme.palette.grey[300],
+    backgroundColor: theme.palette.common.white,
+    borderBottom: `1px solid ${theme.palette.primary.light}`,
+    boxShadow: theme.shadows[4],
+    display: "flex",
+    justifyContent: "flex-start",
+    "& > *": {
+      width: theme.spacing(20),
+      textAlign: "center"
+    },
+    "& > *:hover": {
+      backgroundColor: theme.palette.primary.extraLight,
+      color: theme.palette.common.black,
+    }
   },
   active: {
     backgroundColor: theme.palette.primary.light,
@@ -19,17 +29,22 @@ const useStyles = makeStyles({
 
 const Menubar = () => {
   const classes = useStyles();
-  return (
-    <Box
-      boxShadow={6}
-      className={classes.root}
-    >
-      <Tabs>
-        <Tab label="Home" component={NavLink} to="/" activeClassName={classes.active} exact/>
-        <Tab label="Posts" component={NavLink} to="/posts" activeClassName={classes.active} exact/>
-      </Tabs>
-    </Box>
-  );
+  return (<div component="nav" className={classes.root}>
+    <ListItem button component={NavLink} to="/" activeClassName={classes.active} exact>
+      <ListItemText primary="HOME"/>
+    </ListItem>
+    <ListItem button component={NavLink} to="/posts" activeClassName={classes.active} exact>
+      <ListItemText primary="POSTS"/>
+    </ListItem>
+  </div>);
 }
+// {/*<Menu open="true">*/
+// }
+// {/*  <MenuItem label="Home" component={NavLink} to="/" activeClassName={classes.active} exact/>*/
+// }
+// {/*  <MenuItem label="Posts" component={NavLink} to="/posts" activeClassName={classes.active} exact/>*/
+// }
+// {/*</Menu>*/
+// }
 
 export default Menubar

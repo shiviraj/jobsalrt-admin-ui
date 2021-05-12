@@ -1,21 +1,19 @@
 import React, {useEffect, useState} from 'react'
-import fetchApi from "../../api/fetchApi";
-import Post from "../utils/Post";
+import fetchApi from "../../../api/fetchApi";
 import {makeStyles} from "@material-ui/core/styles";
-import theme from "../../theme/theme";
+import theme from "../../../theme/theme";
+import PostContainer from "./PostContainer";
+import FilterContainer from "./FilterContainer";
 
 const useStyles = makeStyles({
   root: {
     display: "flex",
     flexWrap: "wrap",
-    justifyContent: "center",
-    marginTop: theme.spacing(1)
+    justifyContent: "space-evenly",
+    paddingTop: theme.spacing(3),
+    paddingBottom: theme.spacing(3),
+    backgroundColor: theme.palette.grey[300]
   },
-  active: {
-    backgroundColor: theme.palette.primary.light,
-    color: theme.palette.common.white,
-    borderBottom: `3px solid ${theme.palette.primary.dark}`,
-  }
 });
 
 const Posts = () => {
@@ -31,7 +29,8 @@ const Posts = () => {
   }, [page])
 
   return <div className={classes.root}>
-      {posts.map((post) => <Post post={post} key={post.source}/>)}
+    <PostContainer posts={posts} page={page} setPage={setPage} totalPages={10}/>
+    <FilterContainer/>
   </div>
 }
 
