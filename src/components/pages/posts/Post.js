@@ -39,8 +39,6 @@ const useStyles = makeStyles(theme => ({
   },
   logo: {
     height: theme.spacing(8),
-    width: theme.spacing(8),
-    border: `2px solid ${theme.palette.primary.dark}`
   },
   buttonContainer: {
     display: "flex",

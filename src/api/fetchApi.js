@@ -19,6 +19,12 @@ const fetchPost = async (url, payload, defaultToken) => {
   return await validateAndDecryptResponse(response, defaultToken);
 };
 
+const fetchPut = async (url, payload, defaultToken) => {
+  const encryptPayload = {payload: encrypt(JSON.stringify(payload), defaultToken, encryption())}
+  const response = await axios.put(url, encryptPayload, getHeaders())
+  return await validateAndDecryptResponse(response, defaultToken);
+};
+
 const fetchGet = async (url) => {
   const response = await axios.get(url, getHeaders())
   return await validateAndDecryptResponse(response);
@@ -34,6 +40,10 @@ const fetchApi = (action) => {
       return fetchPost(`/api/posts/page/${action.payload.page}`, action.payload.filters);
     case 'GET_POSTS_PAGE_COUNT':
       return fetchPost('/api/posts/page-count', action.payload.filters);
+    case 'GET_POST':
+      return fetchGet(`/api/posts/${action.payload.url}`);
+    case 'UPDATE_POST':
+      return fetchPut(`/api/posts/${action.payload.url}`, action.payload.post);
     default:
       return new Promise((_res, reject) => reject());
   }

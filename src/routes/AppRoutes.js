@@ -4,6 +4,7 @@ import PrivateRoute from "./PrivateRoute";
 import HomeRoute from "./HomeRoute";
 import Login from "../components/pages/Login";
 import Posts from "../components/pages/posts/Posts";
+import EditPost from "../components/pages/editPost/EditPost";
 
 const AppRoutes = () => {
   return (
@@ -11,6 +12,7 @@ const AppRoutes = () => {
       <Route path="/login" component={Login} exact/>
       <PrivateRoute path="/" component={HomeRoute} exact/>
       <PrivateRoute path="/posts" component={Posts} exact/>
+      <PrivateRoute path="/posts/:url" component={EditPost} exact/>
     </Switch>
   );
 };

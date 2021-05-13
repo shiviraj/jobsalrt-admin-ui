@@ -23,7 +23,7 @@ const FormInput = ({onChange, label, value, ...props}) => {
 
   return (
     <div className={classes.root}>
-      <TextField id="outlined-basic" label={label} variant="outlined" onChange={handleChange} value={text}
+      <TextField label={label} variant="outlined" onChange={handleChange} value={text}
                  {...props}  />
     </div>
   );
