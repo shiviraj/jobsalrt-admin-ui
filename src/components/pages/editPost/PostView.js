@@ -2,6 +2,7 @@ import React from "react";
 import {makeStyles} from "@material-ui/core/styles";
 import EditBasicDetails from "./EditBasicDetails";
 import {Divider, Typography} from "@material-ui/core";
+import EditObject from "./EditObject";
 
 
 const useStyles = makeStyles(theme => ({
@@ -34,12 +35,17 @@ const useStyles = makeStyles(theme => ({
 }));
 
 
-const PostView = ({active}) => {
+const PostView = ({active, post, setPost, triggerSubmit}) => {
   const classes = useStyles()
   return <div className={classes.root}>
-    <Typography variant="h5" className={classes.title}>{active.name}</Typography>
+    <Typography variant="h5" className={classes.title}>{active.name || "Post Details"}</Typography>
     <Divider className={classes.divider}/>
-    {active.key === "basicDetails" && <EditBasicDetails/>}
+    {active.key === "basicDetails" && <EditBasicDetails post={post} setPost={setPost} triggerSubmit={triggerSubmit}/>}
+    {["vacancyDetails", "ageLimit", "feeDetails", "dates"].map(key => {
+      return active.key === key ?
+        <EditObject key={active.key} keyName={active.key} post={post} setPost={setPost}
+                    triggerSubmit={triggerSubmit}/> : <></>
+    })}
   </div>
 }
 

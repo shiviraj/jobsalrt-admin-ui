@@ -3,7 +3,6 @@ import fetchApi from "../../../api/fetchApi";
 import {makeStyles} from "@material-ui/core";
 import PostView from "./PostView";
 import PostOptions from "./PostOptions";
-import PostContext from "../../../context/PostContext";
 
 
 const useStyles = makeStyles((theme) => ({
@@ -45,10 +44,8 @@ const EditPost = (props) => {
 
   return (
     <div className={classes.root}>
-      <PostContext.Provider value={{post, setPost, triggerSubmit}}>
-        <PostView active={active}/>
-        <PostOptions setActive={setActive}/>
-      </PostContext.Provider>
+      <PostView active={active} post={post} setPost={setPost} triggerSubmit={triggerSubmit}/>
+      <PostOptions setActive={setActive}/>
     </div>
   )
 }

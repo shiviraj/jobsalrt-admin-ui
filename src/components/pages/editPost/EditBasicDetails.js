@@ -1,6 +1,5 @@
 import React, {useState} from "react";
 import {makeStyles} from "@material-ui/core/styles";
-import PostContext from "../../../context/PostContext";
 import FormInput from "../../utils/FormInput";
 import {Button} from "@material-ui/core";
 
@@ -12,10 +11,16 @@ const useStyles = makeStyles((theme) => ({
     "& > *": {
       width: "48%"
     }
+  },
+  buttonContainer: {
+    display: "flex", justifyContent: "center",
+  },
+  button: {
+    margin: theme.spacing(2)
   }
 }))
 
-const BasicDetails = ({post, setPost, triggerSubmit}) => {
+const EditBasicDetails = ({post, setPost, triggerSubmit}) => {
   const classes = useStyles()
   const [details, setDetails] = useState(post.basicDetails || {})
   const keyTitle = [{key: "name", label: "Post Title", required: true},
@@ -53,7 +58,9 @@ const BasicDetails = ({post, setPost, triggerSubmit}) => {
   return <form className={classes.root}>
     {
       keyTitle.map(obj => {
+        if (obj.key === "url") details.url = details.url.split(" ").join("-").toLowerCase()
         return <FormInput label={obj.label}
+                          key={obj.label}
                           value={details[obj.key]}
                           onChange={(value) => updateDetails(obj.key, value)}
                           type={obj.type}
@@ -61,15 +68,13 @@ const BasicDetails = ({post, setPost, triggerSubmit}) => {
         />
       })
     }
-    <Button onClick={handleSave}>Save and Continue</Button>
-    <Button onClick={handleSubmit}>Submit and Continue</Button>
+    <div className={classes.buttonContainer}>
+      <Button onClick={handleSave} size="large" color="primary" variant="contained"
+              className={classes.button}>Save</Button>
+      <Button onClick={handleSubmit} size="large" color="primary" variant="contained"
+              className={classes.button}>Update</Button>
+    </div>
   </form>
-}
-
-const EditBasicDetails = () => {
-  return <PostContext.Consumer>{({post, setPost, triggerSubmit}) =>
-    <BasicDetails post={post} setPost={setPost} triggerSubmit={triggerSubmit}/>
-  }</PostContext.Consumer>
 }
 
 export default EditBasicDetails

@@ -40,17 +40,17 @@ const PostOptions = ({setActive}) => {
   }, [activeTab])
 
   return <div className={classes.root}>
-    <Typography variant="h5" className={classes.title}>Post Sections</Typography>
+    <Typography variant="h5">Post Sections</Typography>
     <Divider className={classes.divider}/>
     {
       Object.keys(options).map((key, index) => {
-        return <ListItem button key={key} className={index === activeTab && classes.active}
+        return <ListItem button key={key} className={index === activeTab ? classes.active : ""}
                          onClick={() => setActiveTab(index)}>
           < ListItemText primary={options[key]}/>
         </ListItem>
       })
     }
-    <ListItem button className={options.length === activeTab && classes.active}
+    <ListItem button className={options.length === activeTab ? classes.active : ""}
               onClick={() => setActiveTab(options.length)}>
       < ListItemText primary="Post Details"/>
     </ListItem>

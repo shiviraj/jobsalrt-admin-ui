@@ -47,7 +47,7 @@ const PostSkeletons = () => {
   return <>
     {Array(12).fill("").map((_, index) => {
       return <div className={classes.skeleton} key={"key_" + index}>
-        <Skeleton animation="wave" variant="h4"/>
+        <Skeleton animation="wave" variant="text"/>
         <div className={classes.circleSkeleton}>
           <Skeleton animation="wave" variant="circle" width={60} height={60}/>
         </div>

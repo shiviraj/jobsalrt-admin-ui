@@ -38,7 +38,7 @@ const Pagination = ({count, page, onChange}) => {
   }, [page, count])
 
 
-  return <div>
+  return (<div>
     <IconButton className={classes.button}
                 variant="text"
                 disabled={page === 1}
@@ -49,16 +49,17 @@ const Pagination = ({count, page, onChange}) => {
                 onClick={(e) => onChange(e, page - 1)}> &larr;</IconButton>
     {
       ranges.map((pageNumber, index) => {
-        return <>
+        return <React.Fragment key={index}>
           <IconButton
-            className={`${classes.button} ${pageNumber === page ? classes.active : ""}`}
-            variant="text"
-            key={pageNumber}
-            onClick={(e) => onChange(e, pageNumber)}
-          >{pageNumber}</IconButton>
-          {(ranges[index + 1] && ranges[index + 1] !== pageNumber + 1) &&
-          < IconButton className={classes.button} disabled variant="text">...</IconButton>}
-        </>
+            className={`${classes.button} ${pageNumber === page ? classes.active : ""}`} variant="text"
+            onClick={(e) => onChange(e, pageNumber)}>
+            {pageNumber}
+          </IconButton>
+          {
+            (ranges[index + 1] && ranges[index + 1] !== pageNumber + 1) &&
+            < IconButton className={classes.button} disabled variant="text">&#183;&#183;&#183;</IconButton>
+          }
+        </React.Fragment>
       })
     }
     <IconButton className={classes.button}
@@ -69,7 +70,7 @@ const Pagination = ({count, page, onChange}) => {
                 variant="text"
                 disabled={page === count}
                 onClick={(e) => onChange(e, count)}>&#8677;</IconButton>
-  </div>
+  </div>)
 }
 
 export default Pagination
