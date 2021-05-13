@@ -31,9 +31,9 @@ const fetchApi = (action) => {
     case 'GET_USER':
       return fetchGet('/api/user');
     case 'GET_POSTS':
-      return fetchPost(`/api/posts/page/${action.payload.page}`, {filters: action.payload.filters});
+      return fetchPost(`/api/posts/page/${action.payload.page}`, action.payload.filters);
     case 'GET_POSTS_PAGE_COUNT':
-      return fetchPost('/api/posts/pageCount', {filters: action.payload.filters});
+      return fetchPost('/api/posts/page-count', action.payload.filters);
     default:
       return new Promise((_res, reject) => reject());
   }

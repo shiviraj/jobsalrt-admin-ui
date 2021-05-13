@@ -6,6 +6,7 @@ import {NavLink} from "react-router-dom";
 
 const useStyles = makeStyles({
   root: {
+    marginTop: theme.spacing(8),
     backgroundColor: theme.palette.common.white,
     borderBottom: `1px solid ${theme.palette.primary.light}`,
     boxShadow: theme.shadows[4],
@@ -38,13 +39,5 @@ const Menubar = () => {
     </ListItem>
   </div>);
 }
-// {/*<Menu open="true">*/
-// }
-// {/*  <MenuItem label="Home" component={NavLink} to="/" activeClassName={classes.active} exact/>*/
-// }
-// {/*  <MenuItem label="Posts" component={NavLink} to="/posts" activeClassName={classes.active} exact/>*/
-// }
-// {/*</Menu>*/
-// }
 
 export default Menubar

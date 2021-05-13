@@ -1,9 +1,17 @@
 import React from 'react'
 import Appbar from "./util/Appbar";
 import Menubar from "./util/Menubar";
+import {makeStyles} from "@material-ui/core/styles";
+
+
+const useStyles = makeStyles((theme) => ({
+  root: {position: "fixed"}
+}));
+
 
 const Header = () => {
-  return <><Appbar/><Menubar/></>
+  const classes = useStyles()
+  return <><Appbar className={classes.root}/><Menubar/></>
 }
 
 export default Header

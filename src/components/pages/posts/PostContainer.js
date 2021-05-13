@@ -1,7 +1,8 @@
 import React from "react";
+import {makeStyles} from "@material-ui/core/styles";
+import {Skeleton} from "@material-ui/lab";
 import {Divider, Typography} from "@material-ui/core";
 import Post from "./Post";
-import {makeStyles} from "@material-ui/core/styles";
 import Pagination from "../../utils/Pagination";
 
 
@@ -20,10 +21,6 @@ const useStyles = makeStyles(theme => ({
   postCounts: {
     marginLeft: theme.spacing(2)
   },
-  sortBy: {marginRight: theme.spacing(2)},
-  tabs: {
-    width: theme.spacing(1)
-  },
   postContainer: {
     display: "flex",
     flexWrap: "wrap",
@@ -33,8 +30,32 @@ const useStyles = makeStyles(theme => ({
     display: "flex",
     justifyContent: "space-between",
     margin: theme.spacing(2)
+  },
+  skeleton: {
+    margin: theme.spacing(2),
+    backgroundColor: theme.palette.grey[100],
+    textAlign: "center"
+  },
+  circleSkeleton: {
+    display: "flex",
+    justifyContent: 'center'
   }
 }));
+
+const PostSkeletons = () => {
+  const classes = useStyles()
+  return <>
+    {Array(12).fill("").map((_, index) => {
+      return <div className={classes.skeleton} key={"key_" + index}>
+        <Skeleton animation="wave" variant="h4"/>
+        <div className={classes.circleSkeleton}>
+          <Skeleton animation="wave" variant="circle" width={60} height={60}/>
+        </div>
+        <Skeleton animation="wave" variant="rect" width={280} height={180}/>
+      </div>
+    })}
+  </>;
+};
 
 const PostContainer = ({posts, page, setPage, count}) => {
   const limit = 48
@@ -48,7 +69,9 @@ const PostContainer = ({posts, page, setPage, count}) => {
                   className={classes.postCounts}>(Showing {start} - {end} posts of {count.totalPost} posts)</Typography>
     </div>
     <div className={classes.postContainer}>
-      {posts.map((post, index) => <Post post={post} key={`${post.source}_${index}`}/>)}
+      {posts.length ? posts.map((post, index) => <Post post={post} key={`${post.source}_${index}`}/>)
+        : <PostSkeletons/>
+      }
     </div>
     <Divider/>
     <div className={classes.paginationContainer}>

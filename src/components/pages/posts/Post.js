@@ -42,9 +42,9 @@ const useStyles = makeStyles(theme => ({
     width: theme.spacing(8),
     border: `2px solid ${theme.palette.primary.dark}`
   },
-  buttonContainer:{
-    display:"flex",
-    justifyContent:"center"
+  buttonContainer: {
+    display: "flex",
+    justifyContent: "center"
   }
 }));
 
@@ -79,7 +79,8 @@ const Post = ({post}) => {
       <Typography variant="body1"><b>Post Update Date :</b> &nbsp; {post.postUpdateDate} </Typography>}
       <Typography variant="body1"><b>Total Views :</b> &nbsp; {post.totalViews} </Typography>
       <div className={classes.buttonContainer}>
-        <Button variant="contained" color="primary" component="a" href={`/post/${post.url}`}>Edit</Button>
+        <Button variant="contained" color="primary" component="a"
+                href={`/posts/${post.url}`}>Edit</Button>
       </div>
     </div>
 

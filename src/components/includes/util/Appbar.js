@@ -48,7 +48,7 @@ const PrimarySearchAppBar = () => {
   return (
     <UserContext.Consumer>{({user}) =>
       (<div className={classes.grow}>
-        <AppBar position="static">
+        <AppBar>
           <Toolbar>
             <IconButton
               edge="start"

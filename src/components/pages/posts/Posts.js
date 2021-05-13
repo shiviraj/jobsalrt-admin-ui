@@ -20,7 +20,7 @@ const Posts = () => {
   const classes = useStyles()
   const [posts, setPosts] = useState([])
   const [page, setPage] = useState(1)
-  const [pageCount, setPageCount] = useState(null)
+  const [pageCount, setPageCount] = useState({})
   const [filters, setFilters] = useState({})
 
 
@@ -46,7 +46,7 @@ const Posts = () => {
   }, [page, filters])
 
   return <div className={classes.root}>
-    {pageCount && <PostContainer posts={posts} page={page} setPage={setPage} count={pageCount}/>}
+    <PostContainer posts={posts} page={page} setPage={setPage} count={pageCount}/>
     <FilterContainer applyFilter={setFilters}/>
   </div>
 }
