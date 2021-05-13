@@ -3,6 +3,7 @@ import {makeStyles} from "@material-ui/core/styles";
 import EditBasicDetails from "./EditBasicDetails";
 import {Divider, Typography} from "@material-ui/core";
 import EditObject from "./EditObject";
+import OthersDetails from "./OthersDetails";
 
 
 const useStyles = makeStyles(theme => ({
@@ -46,6 +47,7 @@ const PostView = ({active, post, setPost, triggerSubmit}) => {
         <EditObject key={active.key} keyName={active.key} post={post} setPost={setPost}
                     triggerSubmit={triggerSubmit}/> : <></>
     })}
+    {active.key === "others" && <OthersDetails post={post} setPost={setPost} triggerSubmit={triggerSubmit}/>}
   </div>
 }
 

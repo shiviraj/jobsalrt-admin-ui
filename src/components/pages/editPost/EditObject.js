@@ -1,6 +1,6 @@
 import React, {useState} from 'react';
 import {makeStyles} from "@material-ui/core/styles";
-import {Box, Button, FilledInput, IconButton, Typography} from "@material-ui/core";
+import {Box, Button, FilledInput, IconButton, TextField, Typography} from "@material-ui/core";
 
 const useStyles = makeStyles(theme => ({
   root: {margin: theme.spacing(1)},
@@ -50,9 +50,9 @@ const removeEmptyRow = (obj) => {
 }
 
 const EditObject = ({keyName, post, setPost, triggerSubmit}) => {
-  console.log(post[keyName], keyName)
   const classes = useStyles()
   const [obj, setObj] = useState(removeEmptyRow(post[keyName] || {header: [], body: []}));
+  const [colNo, setColNo] = useState(0);
 
   const updateObj = () => setObj({...obj});
 
@@ -98,7 +98,10 @@ const EditObject = ({keyName, post, setPost, triggerSubmit}) => {
   }
 
   const handleAddRow = (e) => {
-    const newRow = Array(obj.body[0].length).fill("");
+    const colNumber = obj.body.length === 0 ? colNo : obj.body[0].length
+
+    const newRow = Array(colNumber).fill("");
+    console.log(newRow, colNumber)
     obj.body.push(newRow)
     updateObj();
   };
@@ -148,6 +151,9 @@ const EditObject = ({keyName, post, setPost, triggerSubmit}) => {
       ))}
     </Box>
     <div className={classes.addRowButton}>
+      {obj.body.length === 0 &&
+      <TextField label="Total Columns" variant="outlined" size="small" type="number" value={colNo}
+                 onChange={(event) => setColNo(+event.target.value)}/>}
       <Button size="small" color="primary" variant="contained" onClick={handleAddRow}>Add Row</Button>
     </div>
     <div className={classes.buttonContainer}>
