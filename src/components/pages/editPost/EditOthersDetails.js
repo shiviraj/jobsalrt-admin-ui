@@ -10,6 +10,13 @@ const useStyles = makeStyles(theme => ({
     paddingTop: theme.spacing(2),
     "& > *": {paddingLeft: theme.spacing(2), paddingRight: theme.spacing(2)}
   },
+  header: {
+    display: "flex",
+    alignItems: "center",
+  },
+  addButton: {
+    marginLeft: theme.spacing(4),
+  },
   divider: {marginTop: theme.spacing(1), marginBottom: theme.spacing(1)},
   title: {
     fontSize: theme.spacing(3)
@@ -25,11 +32,6 @@ const useStyles = makeStyles(theme => ({
     "&:hover": {
       backgroundColor: theme.palette.error.dark,
     }
-  },
-  addButton: {
-    margin: theme.spacing(2),
-    marginLeft: theme.spacing(4),
-
   },
   buttonContainer: {
     display: "flex",
@@ -59,6 +61,7 @@ const EditOthersDetails = ({post, setPost, triggerSubmit}) => {
   }
 
   const deleteObject = (key) => {
+    setActiveTab(0)
     delete others[key]
     updateOthers()
   }
@@ -79,33 +82,38 @@ const EditOthersDetails = ({post, setPost, triggerSubmit}) => {
   }
 
   return <div>
-    <Tabs value={activeTab}
-          indicatorColor="primary"
-          textColor="primary"
-          onChange={(e, value) => setActiveTab(value)}>
-      {Object.keys(others).map(key => <Tab key={key} label={key}/>)}
+    <div className={classes.header}>
+      <Tabs value={activeTab}
+            indicatorColor="primary"
+            textColor="primary"
+            onChange={(e, value) => setActiveTab(value)}>
+        {
+          Object.keys(others).map((key, index) =>
+            <Tab key={key} label={key} onClick={() => setActiveTab(index)}/>)
+        }
+      </Tabs>
       <Button color="primary" variant="contained" className={classes.addButton} onClick={addNewObject}>
         Add New Object
       </Button>
-    </Tabs>
+    </div>
     <Divider className={classes.divider}/>
-
     {
       Object.keys(others).map((keyName, index) => {
-        return (activeTab === index) && <div className={classes.root} key={keyName}>
-          <div className={classes.deleteButtonContainer}>
-            <Button className={classes.delete} variant="contained" onClick={() => deleteObject(keyName)}>
-              Delete Object
-            </Button>
+        return (activeTab === index) ? <div className={classes.root} key={keyName}>
+            <div className={classes.deleteButtonContainer}>
+              <Button className={classes.delete} variant="contained" onClick={() => deleteObject(keyName)}>
+                Delete Object
+              </Button>
+            </div>
+            <FilledInput className={classes.title} value={keyName}
+                         multiline fullWidth
+                         onChange={(e) => updateKey(keyName, e.target.value)}
+            />
+            <Divider className={classes.divider}/>
+            <EditObject keyName={keyName} post={others} setPost={setOthers} triggerSubmit={updateOthersObj}/>
+            <Divider className={classes.divider}/>
           </div>
-          <FilledInput className={classes.title} value={keyName}
-                       multiline fullWidth
-                       onChange={(e) => updateKey(keyName, e.target.value)}
-          />
-          <Divider className={classes.divider}/>
-          <EditObject keyName={keyName} post={others} setPost={setOthers} triggerSubmit={updateOthersObj}/>
-          <Divider className={classes.divider}/>
-        </div>
+          : undefined
       })
     }
     <div className={classes.buttonContainer}>

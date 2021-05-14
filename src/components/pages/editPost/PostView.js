@@ -49,9 +49,8 @@ const PostView = ({active, post, setPost, triggerSubmit}) => {
                                                triggerSubmit={triggerSubmit}/>
     })}
     {["howToApply", "selectionProcess"].map(key => {
-      return active.key === key ?
-        <EditArray key={active.key} keyName={active.key} post={post} setPost={setPost}
-                   triggerSubmit={triggerSubmit}/> : <></>
+      return active.key === key && <EditArray key={active.key} keyName={active.key} post={post} setPost={setPost}
+                                              triggerSubmit={triggerSubmit}/>
     })}
     {active.key === "others" && <EditOthersDetails post={post} setPost={setPost} triggerSubmit={triggerSubmit}/>}
     {!active.key && <EditPostDetails post={post} setPost={setPost} triggerSubmit={triggerSubmit}/>}

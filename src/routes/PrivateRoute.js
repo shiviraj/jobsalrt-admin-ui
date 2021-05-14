@@ -18,7 +18,7 @@ const AuthRouteWithUser = ({user, setUser, Component, ...rest}) => {
         setUser(null)
         history.push("/login")
       })
-  }, [])
+  }, [history, setUser])
 
   return (isLoading) ? <></> : (<Route {...rest}/>)
 };

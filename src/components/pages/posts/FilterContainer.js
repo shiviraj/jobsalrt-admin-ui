@@ -1,4 +1,4 @@
-import React, {useEffect, useState} from "react";
+import React, {useCallback, useEffect, useState} from "react";
 import {makeStyles} from "@material-ui/core/styles";
 import {Button, Chip, Divider, Typography} from "@material-ui/core";
 import FilterOptions from "./FilterOptions";
@@ -47,16 +47,18 @@ const FilterContainer = ({applyFilter}) => {
       {name: "Result", value: "RESULT", checked: false},
       {name: "Syllabus", value: "SYLLABUS", checked: false},
       {name: "Answer Key", value: "ANSWER_KEY", checked: false},
+      {name: "Admission", value: "ADMISSION", checked: false},
     ],
   })
 
-  const getSelectedFilters = () => {
+
+  const getSelectedFilters = useCallback(() => {
     return Object.keys(filters).reduce((selectedFilters, keyName) => {
         selectedFilters[keyName] = filters[keyName].filter(option => option.checked)
         return selectedFilters
       }, {}
     )
-  }
+  }, [filters])
 
 
   const handleChange = (key, value) => {
@@ -74,8 +76,9 @@ const FilterContainer = ({applyFilter}) => {
   }
 
   useEffect(() => {
-    applyFilter(getSelectedFilters())
-  }, [filters])
+    const selectedFilters = getSelectedFilters();
+    applyFilter(selectedFilters)
+  }, [applyFilter, getSelectedFilters])
 
   return <div className={classes.root}>
     <div>

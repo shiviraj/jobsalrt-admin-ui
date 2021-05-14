@@ -1,4 +1,4 @@
-import React, {useEffect, useState} from 'react'
+import React, {useCallback, useEffect, useState} from 'react'
 import fetchApi from "../../../api/fetchApi";
 import {makeStyles} from "@material-ui/core/styles";
 import theme from "../../../theme/theme";
@@ -24,26 +24,26 @@ const Posts = () => {
   const [filters, setFilters] = useState({})
 
 
-  const getSelectedFilters = () => {
+  const getSelectedFilters = useCallback(() => {
     return Object.keys(filters).reduce((selectedFilters, keyName) => {
       selectedFilters[keyName] = filters[keyName].map(opt => opt.value)
       return selectedFilters
     }, {});
-  };
+  }, [filters])
 
   useEffect(() => {
     fetchApi({type: "GET_POSTS_PAGE_COUNT", payload: {filters: getSelectedFilters()}})
       .then(p => setPageCount(p))
       .catch(e => {
       })
-  }, [filters])
+  }, [filters, getSelectedFilters])
 
   useEffect(() => {
     fetchApi({type: "GET_POSTS", payload: {page, filters: getSelectedFilters()}})
       .then(p => setPosts(p))
       .catch(e => {
       })
-  }, [page, filters])
+  }, [page, filters, getSelectedFilters])
 
   return <div className={classes.root}>
     <PostContainer posts={posts} page={page} setPage={setPage} count={pageCount}/>
