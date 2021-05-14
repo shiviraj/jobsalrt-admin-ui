@@ -3,7 +3,9 @@ import {makeStyles} from "@material-ui/core/styles";
 import EditBasicDetails from "./EditBasicDetails";
 import {Divider, Typography} from "@material-ui/core";
 import EditObject from "./EditObject";
-import OthersDetails from "./OthersDetails";
+import EditOthersDetails from "./EditOthersDetails";
+import EditArray from "./EditArray";
+import EditPostDetails from "./EditPostDetails";
 
 
 const useStyles = makeStyles(theme => ({
@@ -42,12 +44,18 @@ const PostView = ({active, post, setPost, triggerSubmit}) => {
     <Typography variant="h5" className={classes.title}>{active.name || "Post Details"}</Typography>
     <Divider className={classes.divider}/>
     {active.key === "basicDetails" && <EditBasicDetails post={post} setPost={setPost} triggerSubmit={triggerSubmit}/>}
-    {["vacancyDetails", "ageLimit", "feeDetails", "dates"].map(key => {
+    {["vacancyDetails", "ageLimit", "feeDetails", "dates", "importantLinks"].map(key => {
       return active.key === key ?
         <EditObject key={active.key} keyName={active.key} post={post} setPost={setPost}
                     triggerSubmit={triggerSubmit}/> : <></>
     })}
-    {active.key === "others" && <OthersDetails post={post} setPost={setPost} triggerSubmit={triggerSubmit}/>}
+    {["howToApply", "selectionProcess"].map(key => {
+      return active.key === key ?
+        <EditArray key={active.key} keyName={active.key} post={post} setPost={setPost}
+                   triggerSubmit={triggerSubmit}/> : <></>
+    })}
+    {active.key === "others" && <EditOthersDetails post={post} setPost={setPost} triggerSubmit={triggerSubmit}/>}
+    {!active.key && <EditPostDetails post={post} setPost={setPost} triggerSubmit={triggerSubmit}/>}
   </div>
 }
 

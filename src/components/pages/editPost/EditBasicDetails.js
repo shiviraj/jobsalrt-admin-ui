@@ -23,6 +23,9 @@ const useStyles = makeStyles((theme) => ({
 const EditBasicDetails = ({post, setPost, triggerSubmit}) => {
   const classes = useStyles()
   const [details, setDetails] = useState(post.basicDetails || {})
+  const [isSubmit, setIsSubmit] = useState(false)
+
+
   const keyTitle = [{key: "name", label: "Post Title", required: true},
     {key: "formType", label: "Form Type", required: true},
     {key: "advtNo", label: "Advt No", required: false},
@@ -44,18 +47,17 @@ const EditBasicDetails = ({post, setPost, triggerSubmit}) => {
     })
   }
 
-  const handleSave = () => {
+  const handleSave = (event) => {
+    event.preventDefault()
     setPost(post => {
       post.basicDetails = details
       return post
     })
+    isSubmit && triggerSubmit()
   };
 
-  const handleSubmit = () => {
-    handleSave()
-    triggerSubmit()
-  };
-  return <form className={classes.root}>
+
+  return <form className={classes.root} onSubmit={handleSave}>
     {
       keyTitle.map(obj => {
         if (obj.key === "url") details.url = details.url.split(" ").join("-").toLowerCase()
@@ -69,10 +71,10 @@ const EditBasicDetails = ({post, setPost, triggerSubmit}) => {
       })
     }
     <div className={classes.buttonContainer}>
-      <Button onClick={handleSave} size="large" color="primary" variant="contained"
-              className={classes.button}>Save</Button>
-      <Button onClick={handleSubmit} size="large" color="primary" variant="contained"
-              className={classes.button}>Update</Button>
+      <Button size="large" color="primary" variant="contained" onClick={() => setIsSubmit(false)}
+              className={classes.button} type="submit">Save</Button>
+      <Button size="large" color="primary" variant="contained" onClick={() => setIsSubmit(true)}
+              className={classes.button} type="submit">Update</Button>
     </div>
   </form>
 }

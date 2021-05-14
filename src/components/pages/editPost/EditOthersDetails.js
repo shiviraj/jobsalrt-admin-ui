@@ -41,7 +41,7 @@ const useStyles = makeStyles(theme => ({
   },
 }));
 
-const OthersDetails = ({post, setPost, triggerSubmit}) => {
+const EditOthersDetails = ({post, setPost, triggerSubmit}) => {
   const classes = useStyles()
   const [others, setOthers] = useState(post.others || {})
   const [activeTab, setActiveTab] = useState(0)
@@ -119,4 +119,4 @@ const OthersDetails = ({post, setPost, triggerSubmit}) => {
   </div>
 }
 
-export default OthersDetails
+export default EditOthersDetails
