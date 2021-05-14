@@ -30,7 +30,7 @@ const EditPost = (props) => {
       .then(p => setPost(p))
       .catch(e => {
       })
-  }, [])
+  }, [url])
 
 
   const triggerSubmit = () => {

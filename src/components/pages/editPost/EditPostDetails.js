@@ -38,7 +38,6 @@ const useStyles = makeStyles((theme) => ({
 
 const EditPostDetails = ({post, setPost, triggerSubmit}) => {
   const classes = useStyles()
-  const [details, setDetails] = useState(post || {})
   const [failures, setFailures] = useState({failures: post.failures} || {})
   const [activeTab, setActiveTab] = useState(0)
   const [isSubmit, setIsSubmit] = useState(false)
@@ -55,13 +54,24 @@ const EditPostDetails = ({post, setPost, triggerSubmit}) => {
   const updatePost = () => setPost({...post})
 
   const updateDetails = (key, value) => {
-    setDetails(details => {
-      details[key] = value
-      return details
-    })
+    post[key] = value
+    updatePost()
   }
 
-  const handleChange = () => {
+  const handleStateChange = (state, isSelect) => {
+    if (isSelect) post.states.push({type: state})
+    else post.states = post.states.filter(({type}) => type !== state)
+    updatePost()
+  }
+
+  const handleStatusChange = (_e, status) => {
+    post.status = status
+    updatePost()
+  }
+
+  const handleUpdateAvailbleChange = (_e, updateAvailable) => {
+    post.isUpdateAvailable = JSON.parse(updateAvailable)
+    updatePost()
   }
 
   const handleSave = (event) => {
@@ -93,14 +103,14 @@ const EditPostDetails = ({post, setPost, triggerSubmit}) => {
       <FormInput label="Last Update on" value={post.postUpdateDate} disabled/>
       <FormControl component="fieldset" required>
         <FormLabel component="legend">Update Available</FormLabel>
-        <RadioGroup row name="isUpdateAvailable" value={post.isUpdateAvailable.toString()}>
+        <RadioGroup row value={post.isUpdateAvailable.toString()} onChange={handleUpdateAvailbleChange}>
           <FormControlLabel value="true" control={<Radio color="primary"/>} label="True"/>
           <FormControlLabel value="false" control={<Radio color="primary"/>} label="False"/>
         </RadioGroup>
       </FormControl>
       <FormControl component="fieldset" required>
         <FormLabel component="legend">Status</FormLabel>
-        <RadioGroup row name="isUpdateAvailable" value={post.status}>
+        <RadioGroup row value={post.status} onChange={handleStatusChange}>
           <FormControlLabel value="NOT_VERIFIED" control={<Radio color="primary"/>} label="Not Verified"/>
           <FormControlLabel value="VERIFIED" control={<Radio color="primary"/>} label="Verified"/>
           <FormControlLabel value="DISABLED" control={<Radio color="primary"/>} label="Disabled"/>
@@ -113,9 +123,12 @@ const EditPostDetails = ({post, setPost, triggerSubmit}) => {
           {
             states.map(state => {
               return <FormControlLabel
+                key={state.value}
                 control={
-                  <Checkbox name="checkedA" checked={post.states.find(({type}) => type === state.value)}
-                            onChange={handleChange} color="primary"/>}
+                  <Checkbox name="checkedA"
+                            checked={!!post.states.find(({type}) => type === state.value)}
+                            onChange={(e, p) => handleStateChange(state.value, p)}
+                            color="primary"/>}
                 label={state.name}/>
             })
           }
@@ -132,7 +145,6 @@ const EditPostDetails = ({post, setPost, triggerSubmit}) => {
       <Button size="large" color="primary" variant="contained" fullWidth onClick={() => setIsSubmit(true)}
               className={classes.submitButton} type="submit">Update</Button>
     </div>
-
   </form>
 }
 

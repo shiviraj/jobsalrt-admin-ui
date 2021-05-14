@@ -95,7 +95,7 @@ const EditArray = ({keyName, post, setPost, triggerSubmit}) => {
       {list.map((value, index) => {
         return <div className={classes.row}><
           FilledInput className={classes.cell} value={value}
-                      key={index} multiline fullWidth
+                      key={`key-${index}`} multiline fullWidth
                       onChange={(event) => updateListItem(index, event.target.value)}/>
           <div className={`${classes.actionCell} ${classes.cell}`}>
             <IconButton size="small" className={classes.button}

@@ -18,26 +18,27 @@ const useStyles = makeStyles(theme => ({
   divider: {marginTop: theme.spacing(1), marginBottom: theme.spacing(1)},
 }))
 
+const options = {
+  basicDetails: "Basic Details",
+  dates: "Important Dates",
+  importantLinks: "Important Links",
+  feeDetails: "Fee Details",
+  vacancyDetails: "Vacancy Details",
+  ageLimit: "Age Limit",
+  selectionProcess: "Selection Process",
+  howToApply: "How To Apply",
+  others: "Others",
+}
+
 const PostOptions = ({setActive}) => {
   const classes = useStyles()
   const [activeTab, setActiveTab] = useState(0)
 
-  const options = {
-    basicDetails: "Basic Details",
-    dates: "Important Dates",
-    importantLinks: "Important Links",
-    feeDetails: "Fee Details",
-    vacancyDetails: "Vacancy Details",
-    ageLimit: "Age Limit",
-    selectionProcess: "Selection Process",
-    howToApply: "How To Apply",
-    others: "Others",
-  }
 
   useEffect(() => {
     const key = Object.keys(options)[activeTab];
     setActive({key, name: options[key]})
-  }, [activeTab])
+  }, [activeTab, setActive])
 
   return <div className={classes.root}>
     <Typography variant="h5">Post Sections</Typography>

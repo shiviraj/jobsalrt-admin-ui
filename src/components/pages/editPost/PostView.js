@@ -44,10 +44,9 @@ const PostView = ({active, post, setPost, triggerSubmit}) => {
     <Typography variant="h5" className={classes.title}>{active.name || "Post Details"}</Typography>
     <Divider className={classes.divider}/>
     {active.key === "basicDetails" && <EditBasicDetails post={post} setPost={setPost} triggerSubmit={triggerSubmit}/>}
-    {["vacancyDetails", "ageLimit", "feeDetails", "dates", "importantLinks"].map(key => {
-      return active.key === key ?
-        <EditObject key={active.key} keyName={active.key} post={post} setPost={setPost}
-                    triggerSubmit={triggerSubmit}/> : <></>
+    {["vacancyDetails", "ageLimit", "feeDetails", "dates", "importantLinks"].map((key, index) => {
+      return active.key === key && <EditObject key={`key-${index}`} keyName={active.key} post={post} setPost={setPost}
+                                               triggerSubmit={triggerSubmit}/>
     })}
     {["howToApply", "selectionProcess"].map(key => {
       return active.key === key ?

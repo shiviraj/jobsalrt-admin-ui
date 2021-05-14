@@ -121,7 +121,7 @@ const EditObject = ({keyName, post, setPost, triggerSubmit}) => {
       <b>
         <div className={classes.row}>
           {obj.header.length !== 0 ? obj.header.map((value, index) => {
-              return <FilledInput className={classes.cell} value={value} key={index} multiline fullWidth
+              return <FilledInput className={classes.cell} value={value} key={`key-${index}`} multiline fullWidth
                                   onChange={(event) => updateHeader(index, event.target.value)}/>
             })
             :

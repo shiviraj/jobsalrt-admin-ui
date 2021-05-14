@@ -49,7 +49,7 @@ const Pagination = ({count, page, onChange}) => {
                 onClick={(e) => onChange(e, page - 1)}> &larr;</IconButton>
     {
       ranges.map((pageNumber, index) => {
-        return <React.Fragment key={index}>
+        return <React.Fragment key={`key-${index}`}>
           <IconButton
             className={`${classes.button} ${pageNumber === page ? classes.active : ""}`} variant="text"
             onClick={(e) => onChange(e, pageNumber)}>
