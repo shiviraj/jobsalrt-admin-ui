@@ -42,8 +42,12 @@ const fetchApi = (action) => {
       return fetchPost('/api/posts/page-count', action.payload.filters);
     case 'GET_POST':
       return fetchGet(`/api/posts/${action.payload.url}`);
+    case 'URL_AVAILABLE':
+      return fetchGet(`/api/posts/${action.payload.url}/available`);
     case 'UPDATE_POST':
       return fetchPut(`/api/posts/${action.payload.url}`, action.payload.post);
+    case 'ADD_POST':
+      return fetchPost('/api/posts', action.payload);
     default:
       return new Promise((_res, reject) => reject());
   }

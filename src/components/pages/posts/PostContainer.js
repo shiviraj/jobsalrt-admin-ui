@@ -4,6 +4,7 @@ import {Skeleton} from "@material-ui/lab";
 import {Divider, Typography} from "@material-ui/core";
 import Post from "./Post";
 import Pagination from "../../utils/Pagination";
+import AddNewPost from "../editPost/AddNewPost";
 
 
 const useStyles = makeStyles(theme => ({
@@ -16,7 +17,9 @@ const useStyles = makeStyles(theme => ({
     display: "flex",
     flexWrap: "wrap",
     alignItems: "center",
-    marginLeft: theme.spacing(4)
+    justifyContent: "space-between",
+    marginLeft: theme.spacing(2),
+    marginRight: theme.spacing(4),
   },
   postCounts: {
     marginLeft: theme.spacing(2)
@@ -39,7 +42,8 @@ const useStyles = makeStyles(theme => ({
   circleSkeleton: {
     display: "flex",
     justifyContent: 'center'
-  }
+  },
+  divider: {marginTop: theme.spacing(2), marginBottom: theme.spacing(2)}
 }));
 
 const PostSkeletons = () => {
@@ -64,16 +68,21 @@ const PostContainer = ({posts, page, setPage, count}) => {
   const end = (page * limit) > count.totalPost ? count.totalPost : page * limit;
   return <div className={classes.root}>
     <div className={classes.titleContainer}>
-      <Typography variant="h4">All Posts</Typography>
-      <Typography variant="subtitle1"
-                  className={classes.postCounts}>(Showing {start} - {end} posts of {count.totalPost} posts)</Typography>
+      <div className={classes.titleContainer}>
+        <Typography variant="h4">All Posts</Typography>
+        <Typography variant="subtitle1"
+                    className={classes.postCounts}>(Showing {start} - {end} posts
+          of {count.totalPost} posts)</Typography>
+      </div>
+      <AddNewPost setPage={setPage}/>
     </div>
+    <Divider className={classes.divider}/>
     <div className={classes.postContainer}>
       {posts.length ? posts.map((post, index) => <Post post={post} key={`${post.source}_${index}`}/>)
         : <PostSkeletons/>
       }
     </div>
-    <Divider/>
+    <Divider className={classes.divider}/>
     <div className={classes.paginationContainer}>
       <Typography variant="subtitle1">Page {page} of {count.page}</Typography>
       <Pagination count={count.page} page={page} onChange={(e, page) => setPage(page)}/>

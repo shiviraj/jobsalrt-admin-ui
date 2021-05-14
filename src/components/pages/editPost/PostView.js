@@ -1,7 +1,7 @@
 import React from "react";
 import {makeStyles} from "@material-ui/core/styles";
 import EditBasicDetails from "./EditBasicDetails";
-import {Divider, Typography} from "@material-ui/core";
+import {Button, Divider, Link, Typography} from "@material-ui/core";
 import EditObject from "./EditObject";
 import EditOthersDetails from "./EditOthersDetails";
 import EditArray from "./EditArray";
@@ -20,7 +20,7 @@ const useStyles = makeStyles(theme => ({
     display: "flex",
     flexWrap: "wrap",
     alignItems: "center",
-    marginLeft: theme.spacing(4)
+    justifyContent: 'space-between',
   },
   postCounts: {
     marginLeft: theme.spacing(2)
@@ -41,7 +41,11 @@ const useStyles = makeStyles(theme => ({
 const PostView = ({active, post, setPost, triggerSubmit}) => {
   const classes = useStyles()
   return <div className={classes.root}>
-    <Typography variant="h5" className={classes.title}>{active.name || "Post Details"}</Typography>
+    <div className={classes.titleContainer}>
+      <Typography variant="h5">{active.name || "Post Details"}</Typography>
+      <Button variant="contained" color="primary" component={Link} href={post.source} target="_blank">View Post
+        Source</Button>
+    </div>
     <Divider className={classes.divider}/>
     {active.key === "basicDetails" && <EditBasicDetails post={post} setPost={setPost} triggerSubmit={triggerSubmit}/>}
     {["vacancyDetails", "ageLimit", "feeDetails", "dates", "importantLinks"].map((key, index) => {

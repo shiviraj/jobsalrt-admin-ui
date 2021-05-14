@@ -95,25 +95,27 @@ const EditPostDetails = ({post, setPost, triggerSubmit}) => {
     </Tabs>
     <Divider className={classes.divider}/>
     {activeTab === 0 && <div className={classes.root}>
-      <FormInput label="Source" value={post.source} onChange={(value) => updateDetails("source", value)} required/>
-      <FormInput label="Other Source" value={post.otherSource}
-                 onChange={(value) => updateDetails("otherSource", value)}/>
+      <FormInput label="Source" value={post.source} disabled/>
       <FormInput label="Total Views" value={post.totalViews ? post.totalViews : "0"} disabled/>
       <FormInput label="Created At" value={post.createdAt} disabled/>
       <FormInput label="Last Update on" value={post.postUpdateDate} disabled/>
-      <FormControl component="fieldset" required>
-        <FormLabel component="legend">Update Available</FormLabel>
-        <RadioGroup row value={post.isUpdateAvailable.toString()} onChange={handleUpdateAvailbleChange}>
-          <FormControlLabel value="true" control={<Radio color="primary"/>} label="True"/>
-          <FormControlLabel value="false" control={<Radio color="primary"/>} label="False"/>
-        </RadioGroup>
-      </FormControl>
+      <FormInput label="Other Source" value={post.otherSource}
+                 onChange={(value) => updateDetails("otherSource", value)}/>
+
       <FormControl component="fieldset" required>
         <FormLabel component="legend">Status</FormLabel>
         <RadioGroup row value={post.status} onChange={handleStatusChange}>
           <FormControlLabel value="NOT_VERIFIED" control={<Radio color="primary"/>} label="Not Verified"/>
           <FormControlLabel value="VERIFIED" control={<Radio color="primary"/>} label="Verified"/>
           <FormControlLabel value="DISABLED" control={<Radio color="primary"/>} label="Disabled"/>
+        </RadioGroup>
+      </FormControl>
+
+      <FormControl component="fieldset" required>
+        <FormLabel component="legend">Update Available</FormLabel>
+        <RadioGroup row value={post.isUpdateAvailable.toString()} onChange={handleUpdateAvailbleChange}>
+          <FormControlLabel value="true" control={<Radio color="primary"/>} label="True"/>
+          <FormControlLabel value="false" control={<Radio color="primary"/>} label="False"/>
         </RadioGroup>
       </FormControl>
 
