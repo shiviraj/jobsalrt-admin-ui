@@ -40,12 +40,13 @@ const EditOthersDetails = ({post, setPost, triggerSubmit}) => {
   const classes = useStyles()
   const [others, setOthers] = useState(post.others || {})
   const [activeTab, setActiveTab] = useState(0)
+  const [isUpdating, setIsUpdating] = useState(false)
 
   const updateOthers = () => setOthers({...others})
 
-  const updateOthersObj = (key, value) => {
-    others[key] = value
+  const updateOthersObj = (callBack) => {
     updateOthers()
+    callBack()
   }
 
   const updateKey = (oldKey, newKey) => {
@@ -71,7 +72,8 @@ const EditOthersDetails = ({post, setPost, triggerSubmit}) => {
 
   const handleUpdatePost = () => {
     handleSavePost()
-    triggerSubmit()
+    setIsUpdating(true)
+    triggerSubmit(() => setIsUpdating(false))
   }
 
   const handleTabChange = (e, value) => setActiveTab(value);
@@ -106,7 +108,7 @@ const EditOthersDetails = ({post, setPost, triggerSubmit}) => {
       })
     }
 
-    <SaveAndSubmitButtons handleSave={handleSavePost} handleSubmit={handleUpdatePost} fullWidth/>
+    <SaveAndSubmitButtons isLoading={isUpdating} handleSave={handleSavePost} handleSubmit={handleUpdatePost} fullWidth/>
 
   </div>
 }

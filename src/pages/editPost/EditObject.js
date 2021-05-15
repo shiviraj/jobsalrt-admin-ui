@@ -43,6 +43,7 @@ const EditObject = ({keyName, post, setPost, triggerSubmit}) => {
   const classes = useStyles()
   const [obj, setObj] = useState(removeEmptyRow(post[keyName] || {header: [], body: []}));
   const [colNo, setColNo] = useState(0);
+  const [isUpdating, setIsUpdating] = useState(false);
 
   const updateObj = () => setObj({...obj});
 
@@ -103,7 +104,8 @@ const EditObject = ({keyName, post, setPost, triggerSubmit}) => {
 
   const handleUpdatePost = () => {
     handleSavePost()
-    triggerSubmit()
+    setIsUpdating(true)
+    triggerSubmit(() => setIsUpdating(false))
   }
 
   return (<div className={classes.root}>
@@ -147,7 +149,7 @@ const EditObject = ({keyName, post, setPost, triggerSubmit}) => {
       <Button size="small" color="primary" variant="contained" onClick={handleAddRow}>Add Row</Button>
     </div>
 
-    <SaveAndSubmitButtons handleSave={handleSavePost} handleSubmit={handleUpdatePost}/>
+    <SaveAndSubmitButtons isLoading={isUpdating} handleSave={handleSavePost} handleSubmit={handleUpdatePost}/>
 
   </div>)
 };

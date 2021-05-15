@@ -33,6 +33,7 @@ const EditBasicDetails = ({post, setPost, triggerSubmit}) => {
   const [details, setDetails] = useState(post.basicDetails || {})
   const [isSubmit, setIsSubmit] = useState(false)
   const [urlAvailable, setUrlAvailble] = useState(false)
+  const [isUpdating, setIsUpdating] = useState(false)
 
   useEffect(() => {
     fetchApi({type: "URL_AVAILABLE", payload: {url: details.url}})
@@ -57,7 +58,8 @@ const EditBasicDetails = ({post, setPost, triggerSubmit}) => {
       post.basicDetails = details
       return post
     })
-    isSubmit && urlAvailable && triggerSubmit()
+    setIsUpdating(true)
+    isSubmit && urlAvailable && triggerSubmit(() => setIsUpdating(false))
   };
 
   return <form onSubmit={handleSave}>
@@ -80,7 +82,8 @@ const EditBasicDetails = ({post, setPost, triggerSubmit}) => {
                  onChange={(value) => updateDetails("url", value.split(" ").join("-").toLowerCase())} required
                  error={!urlAvailable}/>
     </div>
-    <SaveAndSubmitButtons handleSave={() => setIsSubmit(false)} handleSubmit={() => setIsSubmit(true)} fullWidth/>
+    <SaveAndSubmitButtons type="submit" handleSave={() => setIsSubmit(false)} handleSubmit={() => setIsSubmit(true)}
+                          isLoading={isUpdating} fullWidth/>
 
   </form>
 }

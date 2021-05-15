@@ -43,23 +43,21 @@ const EditPost = ({match}) => {
   const [active, setActive] = useState({key: "basicDetails", name: "Basic Details"})
   const [rawPost, setRawPost] = useState(false)
   const [isLoading, setIsLoading] = useState(true)
-  const [isUpdating, setIsUpdating] = useState(false)
-
 
   useEffect(() => {
     setIsLoading(true)
     fetchApi({type: "GET_POST", payload: {url}})
       .then(p => setPost(p))
       .catch(e => ({}))
-    .then(() => setIsLoading(false))
+      .then(() => setIsLoading(false))
   }, [url])
 
 
-  const triggerSubmit = () => {
+  const triggerSubmit = (callback) => {
     fetchApi({type: "UPDATE_POST", payload: {url, post}})
       .then(p => setPost(p))
-      .catch(e => {
-      })
+      .catch(e => ({}))
+      .then(callback)
   }
 
   if (isLoading) return <EditPostSkeleton/>

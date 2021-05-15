@@ -12,12 +12,13 @@ const useStyles = makeStyles(theme => ({
   }
 }))
 
-const SaveAndSubmitButtons = ({handleSave, handleSubmit, ...rest}) => {
+const SaveAndSubmitButtons = ({handleSave, handleSubmit, isLoading, ...rest}) => {
   const classes = useStyles()
   return <div className={classes.buttonContainer}>
     <Button size="large" color="primary" variant="contained" onClick={handleSave} {...rest}
             className={classes.submitButton}>Save</Button>
-    <ButtonWithLoader size="large" color="primary" variant="contained" onClick={handleSubmit} {...rest}
+    <ButtonWithLoader isLoading={isLoading} size="large" color="primary" variant="contained"
+                      onClick={handleSubmit} {...rest}
                       className={classes.submitButton}>Update</ButtonWithLoader>
   </div>
 }

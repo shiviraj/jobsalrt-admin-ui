@@ -38,6 +38,7 @@ const useStyles = makeStyles(theme => ({
 const EditArray = ({keyName, post, setPost, triggerSubmit}) => {
   const classes = useStyles()
   const [list, setList] = useState(post[keyName] || []);
+  const [isUpdating, setIsUpdating] = useState(false)
 
   const updateList = () => setList([...list]);
 
@@ -78,7 +79,8 @@ const EditArray = ({keyName, post, setPost, triggerSubmit}) => {
 
   const handleUpdatePost = () => {
     handleSavePost()
-    triggerSubmit()
+    setIsUpdating(true)
+    triggerSubmit(() => setIsUpdating(false))
   }
 
   return (<div className={classes.root}>
@@ -102,7 +104,7 @@ const EditArray = ({keyName, post, setPost, triggerSubmit}) => {
       <Button size="small" color="primary" variant="contained" onClick={handleAddRow}>Add Row</Button>
     </div>
 
-    <SaveAndSubmitButtons handleSave={handleSavePost} handleSubmit={handleUpdatePost}/>
+    <SaveAndSubmitButtons isLoading={isUpdating} handleSave={handleSavePost} handleSubmit={handleUpdatePost}/>
 
   </div>)
 };

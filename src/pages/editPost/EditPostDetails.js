@@ -15,7 +15,6 @@ import {
 } from "@material-ui/core";
 import EditArray from "./EditArray";
 import SaveAndSubmitButtons from "./SaveAndSubmitButtons";
-import FormCheckBox from "../../components/FormCheckBox";
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -42,6 +41,7 @@ const EditPostDetails = ({post, setPost, triggerSubmit}) => {
   const [failures, setFailures] = useState({failures: post.failures} || {})
   const [activeTab, setActiveTab] = useState(0)
   const [isSubmit, setIsSubmit] = useState(false)
+  const [isUpdating, setIsUpdating] = useState(false)
 
   const states = [
     {name: "Latest Job", value: "LATEST_JOB"},
@@ -78,7 +78,8 @@ const EditPostDetails = ({post, setPost, triggerSubmit}) => {
   const handleSave = (event) => {
     event.preventDefault()
     updatePost()
-    isSubmit && triggerSubmit()
+    setIsUpdating(true)
+    isSubmit && triggerSubmit(() => setIsUpdating(false))
   };
 
   const handleUpdateFailures = () => {
@@ -142,7 +143,10 @@ const EditPostDetails = ({post, setPost, triggerSubmit}) => {
     {activeTab === 1 &&
     <EditArray post={failures} keyName="failures" setPost={setFailures} triggerSubmit={handleUpdateFailures}/>}
 
-    <SaveAndSubmitButtons handleSave={() => setIsSubmit(false)} handleSubmit={() => setIsSubmit(true)} fullWidth/>
+    <SaveAndSubmitButtons type="submit" fullWidth isLoading={isUpdating}
+                          handleSave={() => setIsSubmit(false)}
+                          handleSubmit={() => setIsSubmit(true)}
+    />
 
   </form>
 }
