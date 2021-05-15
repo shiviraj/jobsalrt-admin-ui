@@ -13,7 +13,13 @@ const useStyles = makeStyles(theme => ({
   }
 }))
 
-const SortBy = ({options, sort, setSort}) => {
+const options = [
+  {key: "createdAt", name: "Created At"},
+  {key: "totalViews", name: "Popularity"},
+  {key: "postUpdateDate", name: "Post Update Date"},
+]
+
+const SortBy = ({sort, setSort}) => {
   const classes = useStyles()
   const [activeTab, setActiveTab] = useState(0)
   const [sortBy, setSortBy] = useState(sort.sortBy)

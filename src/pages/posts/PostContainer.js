@@ -1,11 +1,11 @@
 import React from "react";
 import {makeStyles} from "@material-ui/core/styles";
 import {Divider, Typography} from "@material-ui/core";
-import Post from "./Post";
 import Pagination from "../../components/Pagination";
 import AddNewPost from "../editPost/AddNewPost";
 import SortBy from "./SortBy";
 import PostSkeleton from "../../components/PostSkeleton";
+import Post from "./Post";
 
 
 const useStyles = makeStyles(theme => ({
@@ -30,6 +30,10 @@ const useStyles = makeStyles(theme => ({
     flexWrap: "wrap",
     justifyContent: 'center',
   },
+  noPost: {
+    margin: theme.spacing(20),
+    color: theme.palette.error.light
+  },
   paginationContainer: {
     display: "flex",
     justifyContent: "space-between",
@@ -38,35 +42,39 @@ const useStyles = makeStyles(theme => ({
   divider: {marginTop: theme.spacing(2), marginBottom: theme.spacing(2)}
 }));
 
-const PostContainer = ({posts, page, setPage, count, sort, setSort}) => {
-  const limit = 48
+const TitleBar = ({page, count}) => {
   const classes = useStyles()
+
+  const limit = 48
   const start = (page - 1) * limit + 1;
   const end = (page * limit) > count.totalPost ? count.totalPost : page * limit;
 
-  const sortByOptions = [
-    {key: "createdAt", name: "Created At"},
-    {key: "totalViews", name: "Popularity"},
-    {key: "postUpdateDate", name: "Post Update Date"},
-  ]
+  return <div className={classes.titleContainer}>
+    <Typography variant="h4">All Posts</Typography>
+    <Typography variant="subtitle1" className={classes.postCounts}>
+      (Showing {start} - {end} posts of {count.totalPost} posts)
+    </Typography>
+  </div>
+}
+
+const PostContainer = ({posts, page, setPage, count, sort, setSort}) => {
+  const classes = useStyles()
 
   return <div className={classes.root}>
     <div className={classes.titleContainer}>
-      <div className={classes.titleContainer}>
-        <Typography variant="h4">All Posts</Typography>
-        <Typography variant="subtitle1"
-                    className={classes.postCounts}>(Showing {start} - {end} posts
-          of {count.totalPost} posts)</Typography>
-      </div>
+      <TitleBar page={page} count={count}/>
       <AddNewPost setPage={setPage}/>
     </div>
-    <SortBy options={sortByOptions} sort={sort} setSort={setSort}/>
+    <SortBy sort={sort} setSort={setSort}/>
     <Divider className={classes.divider}/>
+
     <div className={classes.postContainer}>
-      {posts ? posts.map((post, index) => <Post post={post} key={`${post.source}_${index}`}/>)
-        : Array(12).fill("").map((_, index) => <PostSkeleton key={`key-${index}`}/>)
-      }
+      {!posts && Array(12).fill("").map((_, index) => <PostSkeleton key={`key-${index}`}/>)}
+      {posts && posts.length
+        ? posts.map((post, index) => <Post post={post} key={`${post.source}_${index}`}/>)
+        : <Typography variant="h1" className={classes.noPost}>No Post Found...</Typography>}
     </div>
+
     <Divider className={classes.divider}/>
     <div className={classes.paginationContainer}>
       <Typography variant="subtitle1">Page {page} of {count.page}</Typography>

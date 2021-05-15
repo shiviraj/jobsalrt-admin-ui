@@ -90,13 +90,11 @@ const FilterContainer = ({applyFilter}) => {
   }, [applyFilter, getSelectedFilters])
 
   return <div className={classes.root}>
-    <div>
-      <div className={classes.titleBar}>
-        <Typography variant="h5" className={classes.title}>Filters</Typography>
-        <Chip label="&#x2715; &nbsp; Clear All" onClick={handleClearAll}/>
-      </div>
-      <SelectedOptions filters={filters} classes={classes} onclick={handleChange}/>
+    <div className={classes.titleBar}>
+      <Typography variant="h5" className={classes.title}>Filters</Typography>
+      <Chip label="&#x2715; &nbsp; Clear All" onClick={handleClearAll}/>
     </div>
+    <SelectedOptions filters={filters} classes={classes} onclick={handleChange}/>
     <Divider className={classes.divider}/>
     {
       Object.keys(filters).map(key =>
