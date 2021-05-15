@@ -1,8 +1,8 @@
 import React, {useState} from 'react';
 import {makeStyles} from '@material-ui/core/styles';
 import {Button, Modal, Typography} from "@material-ui/core";
-import FormInput from "../../utils/FormInput";
-import fetchApi from "../../../api/fetchApi";
+import FormInput from "../../components/FormInput";
+import fetchApi from "../../api/fetchApi";
 
 const useStyles = makeStyles((theme) => ({
   modal: {
@@ -25,16 +25,15 @@ const AddNewPost = ({setPage}) => {
   const [open, setOpen] = useState(false);
 
   const handleSubmit = (event) => {
-    console.log(source)
     event.preventDefault()
     fetchApi({type: "ADD_POST", payload: {source}})
       .then(p => setPage(1))
       .catch(() => {
       })
-    // setOpen(false)
+    setOpen(false)
   }
 
-  return (<div className={classes.root}>
+  return (<div>
       <Button variant="contained" color="primary" onClick={() => setOpen(true)}>Add New Post</Button>
       <Modal open={open} onClose={() => setOpen(false)}>
         <form className={classes.modal} onSubmit={handleSubmit}>

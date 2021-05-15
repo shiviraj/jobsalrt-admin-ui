@@ -87,10 +87,7 @@ const EditOthersDetails = ({post, setPost, triggerSubmit}) => {
             indicatorColor="primary"
             textColor="primary"
             onChange={(e, value) => setActiveTab(value)}>
-        {
-          Object.keys(others).map((key, index) =>
-            <Tab key={key} label={key} onClick={() => setActiveTab(index)}/>)
-        }
+        {Object.keys(others).map((key, index) => <Tab key={key} label={key}/>)}
       </Tabs>
       <Button color="primary" variant="contained" className={classes.addButton} onClick={addNewObject}>
         Add New Object

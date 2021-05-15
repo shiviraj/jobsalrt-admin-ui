@@ -1,6 +1,6 @@
 import React, {useState} from "react";
 import {makeStyles} from "@material-ui/core/styles";
-import FormInput from "../../utils/FormInput";
+import FormInput from "../../components/FormInput";
 import {
   Button,
   Checkbox,

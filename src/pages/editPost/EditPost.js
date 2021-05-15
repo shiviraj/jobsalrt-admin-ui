@@ -1,5 +1,5 @@
 import React, {useEffect, useState} from 'react'
-import fetchApi from "../../../api/fetchApi";
+import fetchApi from "../../api/fetchApi";
 import {makeStyles} from "@material-ui/core";
 import PostView from "./PostView";
 import PostOptions from "./PostOptions";

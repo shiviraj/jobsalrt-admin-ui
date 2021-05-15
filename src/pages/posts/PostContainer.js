@@ -1,10 +1,11 @@
 import React from "react";
 import {makeStyles} from "@material-ui/core/styles";
-import {Skeleton} from "@material-ui/lab";
 import {Divider, Typography} from "@material-ui/core";
 import Post from "./Post";
-import Pagination from "../../utils/Pagination";
+import Pagination from "../../components/Pagination";
 import AddNewPost from "../editPost/AddNewPost";
+import SortBy from "./SortBy";
+import PostSkeleton from "../../components/PostSkeleton";
 
 
 const useStyles = makeStyles(theme => ({
@@ -34,38 +35,21 @@ const useStyles = makeStyles(theme => ({
     justifyContent: "space-between",
     margin: theme.spacing(2)
   },
-  skeleton: {
-    margin: theme.spacing(2),
-    backgroundColor: theme.palette.grey[100],
-    textAlign: "center"
-  },
-  circleSkeleton: {
-    display: "flex",
-    justifyContent: 'center'
-  },
   divider: {marginTop: theme.spacing(2), marginBottom: theme.spacing(2)}
 }));
 
-const PostSkeletons = () => {
-  const classes = useStyles()
-  return <>
-    {Array(12).fill("").map((_, index) => {
-      return <div className={classes.skeleton} key={"key_" + index}>
-        <Skeleton animation="wave" variant="text"/>
-        <div className={classes.circleSkeleton}>
-          <Skeleton animation="wave" variant="circle" width={60} height={60}/>
-        </div>
-        <Skeleton animation="wave" variant="rect" width={280} height={180}/>
-      </div>
-    })}
-  </>;
-};
-
-const PostContainer = ({posts, page, setPage, count}) => {
+const PostContainer = ({posts, page, setPage, count, sort, setSort}) => {
   const limit = 48
   const classes = useStyles()
   const start = (page - 1) * limit + 1;
   const end = (page * limit) > count.totalPost ? count.totalPost : page * limit;
+
+  const sortByOptions = [
+    {key: "createdAt", name: "Created At"},
+    {key: "totalViews", name: "Popularity"},
+    {key: "postUpdateDate", name: "Post Update Date"},
+  ]
+
   return <div className={classes.root}>
     <div className={classes.titleContainer}>
       <div className={classes.titleContainer}>
@@ -76,10 +60,11 @@ const PostContainer = ({posts, page, setPage, count}) => {
       </div>
       <AddNewPost setPage={setPage}/>
     </div>
+    <SortBy options={sortByOptions} sort={sort} setSort={setSort}/>
     <Divider className={classes.divider}/>
     <div className={classes.postContainer}>
-      {posts.length ? posts.map((post, index) => <Post post={post} key={`${post.source}_${index}`}/>)
-        : <PostSkeletons/>
+      {posts ? posts.map((post, index) => <Post post={post} key={`${post.source}_${index}`}/>)
+        : Array(12).fill("").map((_, index) => <PostSkeleton key={`key-${index}`}/>)
       }
     </div>
     <Divider className={classes.divider}/>

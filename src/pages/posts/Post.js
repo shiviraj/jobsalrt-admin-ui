@@ -1,6 +1,7 @@
-import React from 'react'
-import {Box, Button, Typography} from "@material-ui/core";
+import React, {useState} from 'react'
+import {Box, Button, Modal, Typography} from "@material-ui/core";
 import {makeStyles} from "@material-ui/core/styles";
+import fetchApi from "../../api/fetchApi";
 
 const useStyles = makeStyles(theme => ({
   root: {
@@ -43,17 +44,46 @@ const useStyles = makeStyles(theme => ({
   },
   buttonContainer: {
     display: "flex",
-    justifyContent: "center"
+    justifyContent: "space-evenly"
+  },
+  modal: {
+    position: 'absolute',
+    width: theme.spacing(40),
+    backgroundColor: theme.palette.background.paper,
+    boxShadow: theme.shadows[5],
+    padding: theme.spacing(2, 4, 3),
+    top: '30%',
+    left: '40%',
+    "& > *": {
+      margin: theme.spacing(2, 0)
+    }
+  },
+  deleteButton: {
+    backgroundColor: theme.palette.error.main,
+    color: theme.palette.common.white,
+    '&:hover': {
+      backgroundColor: theme.palette.error.dark,
+    }
   }
 }));
 
 
 const Post = ({post}) => {
   const classes = useStyles()
+  const [open, setOpen] = useState(false);
+
   const boxBackground = {
     NOT_VERIFIED: classes.error,
     VERIFIED: classes.success,
     DISABLED: classes.disabled
+  }
+
+  const handleDelete = () => {
+    fetchApi({type: "DELETE_POST", payload: {url: post.url}})
+      .then(() => {
+      })
+      .catch(() => {
+      })
   }
 
   return <Box m={0.5} p={1} className={`${classes.root} ${boxBackground[post.status]}`}>
@@ -78,11 +108,20 @@ const Post = ({post}) => {
       <Typography variant="body1"><b>Post Update Date :</b> &nbsp; {post.postUpdateDate} </Typography>}
       <Typography variant="body1"><b>Total Views :</b> &nbsp; {post.totalViews} </Typography>
       <div className={classes.buttonContainer}>
+        <Button variant="contained" onClick={() => setOpen(true)}>Delete</Button>
         <Button variant="contained" color="primary" component="a"
                 href={`/posts/${post.url}`}>Edit</Button>
       </div>
     </div>
-
+    <Modal open={open} onClose={() => setOpen(false)}>
+      <div className={classes.modal}>
+        <Typography variant="h5">Do you really want to delete?</Typography>
+        <div className={classes.buttonContainer}>
+          <Button variant="contained" onClick={() => setOpen(false)}>Cancel</Button>
+          <Button variant="contained" className={classes.deleteButton} onClick={handleDelete}>Delete</Button>
+        </div>
+      </div>
+    </Modal>
   </Box>
 }
 

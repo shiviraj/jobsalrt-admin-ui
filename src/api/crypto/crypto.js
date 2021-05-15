@@ -23,7 +23,6 @@ const encrypt = (text, defaultToken, encryptionEnable) => {
 const decrypt = (content, encryption, defaultToken) => {
     if (encryption) {
       const secretKey = getSecretKey(defaultToken)
-      console.log(secretKey)
       const decipher = crypto.createDecipheriv(algorithm, secretKey, iv);
       const decrypted = Buffer.concat([decipher.update(Buffer.from(content, 'hex')), decipher.final()]);
       return decrypted.toString();

@@ -3,8 +3,8 @@ import {useHistory} from 'react-router-dom';
 import {makeStyles} from '@material-ui/core/styles';
 import Modal from '@material-ui/core/Modal';
 
-import FormInput from '../utils/FormInput';
-import fetchApi from '../../api/fetchApi';
+import FormInput from '../components/FormInput';
+import fetchApi from '../api/fetchApi';
 import {Button, Typography} from "@material-ui/core";
 
 const useStyles = makeStyles((theme) => ({

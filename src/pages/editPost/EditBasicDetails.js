@@ -1,8 +1,8 @@
 import React, {useEffect, useState} from "react";
 import {makeStyles} from "@material-ui/core/styles";
-import FormInput from "../../utils/FormInput";
+import FormInput from "../../components/FormInput";
 import {Button, FormControl, FormControlLabel, FormLabel, Radio, RadioGroup} from "@material-ui/core";
-import fetchApi from "../../../api/fetchApi";
+import fetchApi from "../../api/fetchApi";
 
 const useStyles = makeStyles((theme) => ({
   root: {

@@ -30,6 +30,11 @@ const fetchGet = async (url) => {
   return await validateAndDecryptResponse(response);
 }
 
+const fetchDelete = async (url) => {
+  const response = await axios.delete(url, getHeaders())
+  return await validateAndDecryptResponse(response);
+}
+
 const fetchApi = (action) => {
   switch (action.type) {
     case 'SIGN_IN':
@@ -37,17 +42,19 @@ const fetchApi = (action) => {
     case 'GET_USER':
       return fetchGet('/api/user');
     case 'GET_POSTS':
-      return fetchPost(`/api/posts/page/${action.payload.page}`, action.payload.filters);
+      return fetchPost(`/api/posts/page/${action.payload.page}`, action.payload);
     case 'GET_POSTS_PAGE_COUNT':
-      return fetchPost('/api/posts/page-count', action.payload.filters);
-    case 'GET_POST':
-      return fetchGet(`/api/posts/${action.payload.url}`);
+      return fetchPost('/api/posts/page-count', action.payload);
     case 'URL_AVAILABLE':
       return fetchGet(`/api/posts/${action.payload.url}/available`);
-    case 'UPDATE_POST':
-      return fetchPut(`/api/posts/${action.payload.url}`, action.payload.post);
+    case 'GET_POST':
+      return fetchGet(`/api/posts/${action.payload.url}`);
     case 'ADD_POST':
       return fetchPost('/api/posts', action.payload);
+    case 'UPDATE_POST':
+      return fetchPut(`/api/posts/${action.payload.url}`, action.payload.post);
+    case 'DELETE_POST':
+      return fetchDelete(`/api/posts/${action.payload.url}`);
     default:
       return new Promise((_res, reject) => reject());
   }

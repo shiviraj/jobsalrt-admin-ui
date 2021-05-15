@@ -49,6 +49,10 @@ const FilterContainer = ({applyFilter}) => {
       {name: "Answer Key", value: "ANSWER_KEY", checked: false},
       {name: "Admission", value: "ADMISSION", checked: false},
     ],
+    isUpdateAvailable: [
+      {name: "Update Available", value: true, checked: false},
+      {name: "No Update Available", value: false, checked: false},
+    ],
   })
 
 
@@ -94,6 +98,9 @@ const FilterContainer = ({applyFilter}) => {
     <FilterOptions options={filters.formType} handleChange={handleChange} keyName="formType" title="Form Type"/>
     <Divider className={classes.divider}/>
     <FilterOptions options={filters.type} handleChange={handleChange} keyName="type" title="Type"/>
+    <Divider className={classes.divider}/>
+    <FilterOptions options={filters.isUpdateAvailable} handleChange={handleChange} keyName="isUpdateAvailable"
+                   title="Update Available"/>
     <Divider className={classes.divider}/>
   </div>
 }
