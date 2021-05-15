@@ -1,15 +1,16 @@
 import React, {useEffect, useState} from "react";
 import {makeStyles} from "@material-ui/core/styles";
 import IconButton from "@material-ui/core/IconButton";
+import {FirstPage, LastPage, MoreHoriz, NavigateBefore, NavigateNext} from '@material-ui/icons';
+
 
 const useStyles = makeStyles(theme => ({
   button: {
-    paddingBottom: theme.spacing(1),
-    paddingTop: theme.spacing(1),
-    paddingLeft: theme.spacing(2),
-    paddingRight: theme.spacing(2),
+    padding: theme.spacing(1),
+    height: theme.spacing(4),
+    width: theme.spacing(4),
     fontSize: theme.spacing(2.5),
-    marginLeft: theme.spacing(0.5)
+    margin: theme.spacing(0.5)
   },
   active: {
     backgroundColor: theme.palette.primary.main,
@@ -39,37 +40,26 @@ const Pagination = ({count, page, onChange}) => {
 
 
   return (<div>
-    <IconButton className={classes.button}
-                variant="text"
-                disabled={page === 1}
-                onClick={(e) => onChange(e, 1)}>&#8676;</IconButton>
-    <IconButton className={classes.button}
-                variant="text"
-                disabled={page === 1}
-                onClick={(e) => onChange(e, page - 1)}> &larr;</IconButton>
+    <IconButton className={classes.button} disabled={page === 1}
+                onClick={(e) => onChange(e, 1)}><FirstPage/></IconButton>
+    <IconButton className={classes.button} disabled={page === 1}
+                onClick={(e) => onChange(e, page - 1)}><NavigateBefore/></IconButton>
     {
       ranges.map((pageNumber, index) => {
         return <React.Fragment key={`key-${index}`}>
-          <IconButton
-            className={`${classes.button} ${pageNumber === page ? classes.active : ""}`} variant="text"
-            onClick={(e) => onChange(e, pageNumber)}>
-            {pageNumber}
-          </IconButton>
+          <IconButton className={`${classes.button} ${pageNumber === page ? classes.active : ""}`}
+                      onClick={(e) => onChange(e, pageNumber)}>{pageNumber}</IconButton>
           {
             (ranges[index + 1] && ranges[index + 1] !== pageNumber + 1) &&
-            < IconButton className={classes.button} disabled variant="text">&#183;&#183;&#183;</IconButton>
+            < IconButton className={classes.button} disabled><MoreHoriz/></IconButton>
           }
         </React.Fragment>
       })
     }
-    <IconButton className={classes.button}
-                variant="text"
-                disabled={page === count}
-                onClick={(e) => onChange(e, page + 1)}>&rarr;</IconButton>
-    <IconButton className={classes.button}
-                variant="text"
-                disabled={page === count}
-                onClick={(e) => onChange(e, count)}>&#8677;</IconButton>
+    <IconButton className={classes.button} disabled={page === count}
+                onClick={(e) => onChange(e, page + 1)}><NavigateNext/></IconButton>
+    <IconButton className={classes.button} disabled={page === count}
+                onClick={(e) => onChange(e, count)}><LastPage/></IconButton>
   </div>)
 }
 
