@@ -2,6 +2,7 @@ import React, {useState} from 'react'
 import {Box, Button, Modal, Typography} from "@material-ui/core";
 import {makeStyles} from "@material-ui/core/styles";
 import fetchApi from "../../api/fetchApi";
+import ButtonWithLoader from "../../components/ButtonWithLoader";
 
 const useStyles = makeStyles(theme => ({
   root: {
@@ -69,6 +70,7 @@ const useStyles = makeStyles(theme => ({
 const Post = ({post}) => {
   const classes = useStyles()
   const [open, setOpen] = useState(false);
+  const [isDeleting, setIsDeleting] = useState(false);
 
   const boxBackgrounds = {
     NOT_VERIFIED: classes.error,
@@ -77,11 +79,11 @@ const Post = ({post}) => {
   }
 
   const handleDelete = () => {
+    setIsDeleting(true)
     fetchApi({type: "DELETE_POST", payload: {url: post.url}})
-      .then(() => {
-      })
-      .catch(() => {
-      })
+      .then(() => setOpen(false))
+      .catch(() => ({}))
+      .then(() => setIsDeleting(false))
   }
 
   return <Box m={0.5} p={1} className={`${classes.root} ${boxBackgrounds[post.status]}`}>
@@ -116,7 +118,8 @@ const Post = ({post}) => {
         <Typography variant="h5">Do you really want to delete?</Typography>
         <div className={classes.buttonContainer}>
           <Button variant="contained" onClick={() => setOpen(false)}>Cancel</Button>
-          <Button variant="contained" className={classes.deleteButton} onClick={handleDelete}>Delete</Button>
+          <ButtonWithLoader isLoading={isDeleting} variant="contained" className={classes.deleteButton}
+                            onClick={handleDelete}>Delete</ButtonWithLoader>
         </div>
       </div>
     </Modal>

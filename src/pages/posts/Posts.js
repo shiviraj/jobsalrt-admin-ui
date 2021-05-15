@@ -37,7 +37,7 @@ const Posts = () => {
       .then(p => setPageCount(p))
       .catch(e => {
       })
-  }, [filters, getSelectedFilters, sort.sortBy, sort.sortOrder])
+  }, [filters, getSelectedFilters, sort])
 
   useEffect(() => {
     setPosts(null)
@@ -45,7 +45,7 @@ const Posts = () => {
       .then(p => setPosts(p))
       .catch(e => {
       })
-  }, [page, filters, getSelectedFilters, sort.sortBy, sort.sortOrder])
+  }, [page, filters, getSelectedFilters, sort])
 
   return <div className={classes.root}>
     <PostContainer posts={posts} page={page} setPage={setPage} count={pageCount} sort={sort} setSort={setSort}/>

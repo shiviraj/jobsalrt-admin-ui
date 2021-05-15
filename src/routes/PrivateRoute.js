@@ -5,19 +5,17 @@ import {Route, useHistory} from "react-router-dom"
 
 const AuthRouteWithUser = ({user, setUser, Component, ...rest}) => {
   const history = useHistory()
-  const [isLoading, setIsLoading] = useState(true)
+  const [isLoading, setIsLoading] = useState(false)
 
   useEffect(() => {
+    setIsLoading(true)
     fetchApi({type: 'GET_USER'})
-      .then(u => {
-        setUser(u)
-        setIsLoading(false)
-      })
+      .then(u => setUser(u))
       .catch(() => {
-        setIsLoading(false)
         setUser(null)
         history.push("/login")
       })
+      .then(() => setIsLoading(false))
   }, [history, setUser])
 
   return (isLoading) ? <></> : (<Route {...rest}/>)

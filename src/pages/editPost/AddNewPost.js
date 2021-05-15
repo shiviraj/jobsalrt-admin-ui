@@ -3,6 +3,7 @@ import {makeStyles} from '@material-ui/core/styles';
 import {Button, Modal, Typography} from "@material-ui/core";
 import FormInput from "../../components/FormInput";
 import fetchApi from "../../api/fetchApi";
+import ButtonWithLoader from "../../components/ButtonWithLoader";
 
 const useStyles = makeStyles((theme) => ({
   modal: {
@@ -23,14 +24,18 @@ const AddNewPost = ({setPage}) => {
   const classes = useStyles();
   const [source, setSource] = useState("")
   const [open, setOpen] = useState(false);
+  const [isLoading, setIsLoading] = useState(false)
 
   const handleSubmit = (event) => {
     event.preventDefault()
+    setIsLoading(true)
     fetchApi({type: "ADD_POST", payload: {source}})
-      .then(p => setPage(1))
-      .catch(() => {
+      .then(p => {
+        setOpen(false)
+        setPage(1)
       })
-    setOpen(false)
+      .catch(() => ({}))
+      .then(() => setIsLoading(false))
   }
 
   return (<div>
@@ -39,7 +44,9 @@ const AddNewPost = ({setPage}) => {
         <form className={classes.modal} onSubmit={handleSubmit}>
           <Typography variant="h5">Enter Post Source</Typography>
           <FormInput label="Source" value={source} onChange={setSource} required/>
-          <Button type="submit" variant="contained" color="primary" fullWidth>Add Post</Button>
+          <ButtonWithLoader isLoading={isLoading} type="submit" variant="contained" color="primary" fullWidth>
+            Add Post
+          </ButtonWithLoader>
         </form>
       </Modal>
     </div>

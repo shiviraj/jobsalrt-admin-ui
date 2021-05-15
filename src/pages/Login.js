@@ -5,7 +5,8 @@ import Modal from '@material-ui/core/Modal';
 
 import FormInput from '../components/FormInput';
 import fetchApi from '../api/fetchApi';
-import {Button, Typography} from "@material-ui/core";
+import {Typography} from "@material-ui/core";
+import ButtonWithLoader from "../components/ButtonWithLoader";
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -41,20 +42,26 @@ const useStyles = makeStyles((theme) => ({
 
 const Login = () => {
   const history = useHistory();
+  const classes = useStyles();
+
   const [email, setEmail] = useState('');
   const [password, setPwd] = useState('');
   const [error, setError] = useState(undefined);
-  const classes = useStyles();
+  const [isLoading, setIsLoading] = useState(false)
   const rootRef = useRef(null);
 
   const handleSubmit = (e) => {
     e.preventDefault();
+    setIsLoading(true)
     fetchApi({type: 'SIGN_IN', payload: {email, password}})
       .then((u) => {
         localStorage.setItem("token", JSON.stringify(u))
         history.push('/')
       })
-      .catch(() => setError('Something went wrong, try again!!'));
+      .catch(() => {
+        setError('Something went wrong, try again!!')
+        setIsLoading(false)
+      });
   };
 
   return (<div className={classes.root} ref={rootRef}>
@@ -66,10 +73,11 @@ const Login = () => {
       <form className={classes.paper} onSubmit={handleSubmit}>
         <Typography variant="h5">Log In</Typography>
         <Typography variant="subtitle1" className={classes.error}>{error ? error : ''}</Typography>
-        <FormInput type="email" label="Email" onChange={setEmail} required/>
+        <FormInput type="email" label="Email" onChange={setEmail} autoFocus required/>
         <FormInput type="password" label="Password" onChange={setPwd} required/>
-        <Button variant="contained" size="large" color="primary" className={classes.button} fullWidth
-                disabled={email === "" || password === ""} type="submit">Log In</Button>
+        <ButtonWithLoader isLoading={isLoading} variant="contained" size="large" color="primary"
+                          className={classes.button} fullWidth
+                          disabled={email === "" || password === ""} type="submit">Log In</ButtonWithLoader>
       </form>
     </Modal>
   </div>)

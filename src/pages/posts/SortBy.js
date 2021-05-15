@@ -35,7 +35,7 @@ const SortBy = ({sort, setSort}) => {
 
   useEffect(() => {
     setSort({sortBy, sortOrder})
-  }, [sortOrder, sortBy])
+  }, [sortOrder, sortBy, setSort])
 
   const symbol = sortOrder === "desc" ? "▼" : "▲"
 
