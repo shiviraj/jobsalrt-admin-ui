@@ -2,19 +2,24 @@ import React, {useCallback, useEffect, useState} from "react";
 import {makeStyles} from "@material-ui/core/styles";
 import {Button, Chip, Divider, Typography} from "@material-ui/core";
 import FilterOptions from "./FilterOptions";
+import {Close} from "@material-ui/icons";
 
 const useStyles = makeStyles(theme => ({
-  root: {
-    width: '18%',
-    backgroundColor: theme.palette.common.white,
-    paddingTop: theme.spacing(2),
-    "& > *": {paddingLeft: theme.spacing(2)}
-  },
-  titleBar: {display: "flex", justifyContent: "space-between", paddingRight: theme.spacing(2)},
-  title: {marginBottom: theme.spacing(1)},
-  filter: {backgroundColor: theme.palette.grey[300], margin: theme.spacing(0.5)},
-  divider: {marginTop: theme.spacing(2), marginBottom: theme.spacing(2),}
-}));
+    root: {
+      width: '18%',
+      backgroundColor: theme.palette.common.white,
+      paddingTop: theme.spacing(2),
+    },
+    titleBar: {
+      display: "flex",
+      justifyContent: "space-between",
+      padding: theme.spacing(0, 2)
+    },
+    title: {marginBottom: theme.spacing(1)},
+    filter: {backgroundColor: theme.palette.grey[300], margin: theme.spacing(0.5)},
+    divider: {marginTop: theme.spacing(2)}
+  }))
+;
 
 
 const SelectedOptions = ({filters, classes, onclick}) => {
@@ -23,7 +28,7 @@ const SelectedOptions = ({filters, classes, onclick}) => {
       checked && <Button variant="contained"
                          key={`${keyName}_${index}`}
                          onClick={() => onclick(keyName, value)}
-                         className={classes.filter}>&#x2715; &nbsp; {name} </Button>
+                         className={classes.filter}><Close fontSize="small"/> &nbsp; {name} </Button>
     )
   )
 };
@@ -93,15 +98,11 @@ const FilterContainer = ({applyFilter}) => {
       <SelectedOptions filters={filters} classes={classes} onclick={handleChange}/>
     </div>
     <Divider className={classes.divider}/>
-    <FilterOptions options={filters.status} handleChange={handleChange} keyName="status" title="Status"/>
-    <Divider className={classes.divider}/>
-    <FilterOptions options={filters.formType} handleChange={handleChange} keyName="formType" title="Form Type"/>
-    <Divider className={classes.divider}/>
-    <FilterOptions options={filters.type} handleChange={handleChange} keyName="type" title="Type"/>
-    <Divider className={classes.divider}/>
-    <FilterOptions options={filters.isUpdateAvailable} handleChange={handleChange} keyName="isUpdateAvailable"
-                   title="Update Available"/>
-    <Divider className={classes.divider}/>
+    {
+      Object.keys(filters).map(key =>
+        <FilterOptions key={key} options={filters[key]} handleChange={handleChange} keyName={key} title={key}/>
+      )
+    }
   </div>
 }
 

@@ -41,10 +41,10 @@ const Posts = () => {
 
   useEffect(() => {
     setPosts(null)
-    // fetchApi({type: "GET_POSTS", payload: {page, filters: getSelectedFilters(), ...sort}})
-    //   .then(p => setPosts(p))
-    //   .catch(e => {
-    //   })
+    fetchApi({type: "GET_POSTS", payload: {page, filters: getSelectedFilters(), ...sort}})
+      .then(p => setPosts(p))
+      .catch(e => {
+      })
   }, [page, filters, getSelectedFilters, sort.sortBy, sort.sortOrder])
 
   return <div className={classes.root}>
