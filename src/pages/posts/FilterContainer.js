@@ -60,10 +60,9 @@ const FilterContainer = ({applyFilter}) => {
     ],
   })
 
-
   const getSelectedFilters = useCallback(() => {
     return Object.keys(filters).reduce((selectedFilters, keyName) => {
-        selectedFilters[keyName] = filters[keyName].filter(option => option.checked)
+        selectedFilters[keyName] = filters[keyName].filter(option => option.checked).map(opt => opt.value)
         return selectedFilters
       }, {}
     )
@@ -77,16 +76,12 @@ const FilterContainer = ({applyFilter}) => {
   }
 
   const handleClearAll = () => {
-    const selectedFilters = getSelectedFilters();
-    Object.keys(selectedFilters).forEach(keyName => {
-        selectedFilters[keyName].forEach(opt => handleChange(keyName, opt.value))
-      }
-    )
+    Object.keys(filters).forEach(keyName => filters[keyName].forEach(opt => opt.checked = false))
+    setFilters({...filters})
   }
 
   useEffect(() => {
-    const selectedFilters = getSelectedFilters();
-    applyFilter(selectedFilters)
+    applyFilter(getSelectedFilters())
   }, [applyFilter, getSelectedFilters])
 
   return <div className={classes.root}>

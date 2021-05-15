@@ -1,4 +1,4 @@
-import React from "react";
+import React, {useEffect, useState} from "react";
 import {makeStyles} from "@material-ui/core/styles";
 import {Divider, Typography} from "@material-ui/core";
 import Pagination from "../../components/Pagination";
@@ -6,14 +6,10 @@ import AddNewPost from "../editPost/AddNewPost";
 import SortBy from "./SortBy";
 import PostSkeleton from "../../components/PostSkeleton";
 import Post from "./Post";
-
+import fetchApi from "../../api/fetchApi";
 
 const useStyles = makeStyles(theme => ({
-  root: {
-    width: '80%',
-    backgroundColor: theme.palette.common.white,
-    paddingTop: theme.spacing(2)
-  },
+  root: {width: '80%', backgroundColor: theme.palette.common.white, paddingTop: theme.spacing(2)},
   titleContainer: {
     display: "flex",
     flexWrap: "wrap",
@@ -22,23 +18,10 @@ const useStyles = makeStyles(theme => ({
     marginLeft: theme.spacing(2),
     marginRight: theme.spacing(4),
   },
-  postCounts: {
-    marginLeft: theme.spacing(2)
-  },
-  postContainer: {
-    display: "flex",
-    flexWrap: "wrap",
-    justifyContent: 'center',
-  },
-  noPost: {
-    margin: theme.spacing(20),
-    color: theme.palette.error.light
-  },
-  paginationContainer: {
-    display: "flex",
-    justifyContent: "space-between",
-    margin: theme.spacing(2)
-  },
+  postCounts: {marginLeft: theme.spacing(2)},
+  postContainer: {display: "flex", flexWrap: "wrap", justifyContent: 'center',},
+  noPost: {margin: theme.spacing(20), color: theme.palette.error.light},
+  paginationContainer: {display: "flex", justifyContent: "space-between", margin: theme.spacing(2)},
   divider: {marginTop: theme.spacing(2), marginBottom: theme.spacing(2)}
 }));
 
@@ -57,28 +40,57 @@ const TitleBar = ({page, count}) => {
   </div>
 }
 
-const PostContainer = ({posts, page, setPage, count, sort, setSort}) => {
+const PostsContents = ({posts}) => {
   const classes = useStyles()
+  if (!posts) return Array(12).fill("").map((_, index) => <PostSkeleton key={`key-${index}`}/>)
+  return posts && posts.length
+    ? posts.map((post, index) => <Post post={post} key={`${post.source}_${index}`}/>)
+    : <Typography variant="h1" className={classes.noPost}>No Post Found...</Typography>
+}
+
+const PostContainer = ({filters}) => {
+  const classes = useStyles()
+
+  const [posts, setPosts] = useState(null)
+  const [page, setPage] = useState(1)
+  const [pageCount, setPageCount] = useState({})
+  const [sort, setSort] = useState({sortBy: "createdAt", sortOrder: "desc"})
+
+  const getPostsBasedOnFiltersAndSort = (pageNo) => {
+    setPosts(null)
+    return fetchApi({type: "GET_POSTS", payload: {page: pageNo, filters, ...sort}})
+      .then(posts => setPosts(posts))
+      .catch(e => ({}))
+  };
+
+  useEffect(() => {
+    fetchApi({type: "GET_POSTS_PAGE_COUNT", payload: {filters, ...sort}})
+      .then((pageCount) => setPageCount(pageCount))
+      .catch(e => ({}))
+
+    getPostsBasedOnFiltersAndSort(1).then(() => setPage(1))
+  }, [filters, sort])
+
+  useEffect(() => {
+    getPostsBasedOnFiltersAndSort(page).then(() => ({}))
+  }, [page])
 
   return <div className={classes.root}>
     <div className={classes.titleContainer}>
-      <TitleBar page={page} count={count}/>
+      <TitleBar page={page} count={pageCount}/>
       <AddNewPost setPage={setPage}/>
     </div>
     <SortBy sort={sort} setSort={setSort}/>
     <Divider className={classes.divider}/>
 
     <div className={classes.postContainer}>
-      {!posts && Array(12).fill("").map((_, index) => <PostSkeleton key={`key-${index}`}/>)}
-      {posts && posts.length
-        ? posts.map((post, index) => <Post post={post} key={`${post.source}_${index}`}/>)
-        : <Typography variant="h1" className={classes.noPost}>No Post Found...</Typography>}
+      <PostsContents posts={posts}/>
     </div>
 
     <Divider className={classes.divider}/>
     <div className={classes.paginationContainer}>
-      <Typography variant="subtitle1">Page {page} of {count.page}</Typography>
-      <Pagination count={count.page} page={page} onChange={(e, page) => setPage(page)}/>
+      <Typography variant="subtitle1">Page {page} of {pageCount.page}</Typography>
+      <Pagination count={pageCount.page} page={page} onChange={(e, page) => setPage(page)}/>
       <div>-</div>
     </div>
   </div>
