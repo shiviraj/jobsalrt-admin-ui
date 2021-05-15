@@ -2,7 +2,6 @@ import React, {useState} from "react";
 import {makeStyles} from "@material-ui/core/styles";
 import FormInput from "../../components/FormInput";
 import {
-  Button,
   Checkbox,
   Divider,
   FormControl,
@@ -15,6 +14,8 @@ import {
   Tabs
 } from "@material-ui/core";
 import EditArray from "./EditArray";
+import SaveAndSubmitButtons from "./SaveAndSubmitButtons";
+import FormCheckBox from "../../components/FormCheckBox";
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -141,12 +142,8 @@ const EditPostDetails = ({post, setPost, triggerSubmit}) => {
     {activeTab === 1 &&
     <EditArray post={failures} keyName="failures" setPost={setFailures} triggerSubmit={handleUpdateFailures}/>}
 
-    <div className={classes.buttonContainer}>
-      <Button size="large" color="primary" variant="contained" fullWidth onClick={() => setIsSubmit(false)}
-              className={classes.submitButton} type="submit">Save</Button>
-      <Button size="large" color="primary" variant="contained" fullWidth onClick={() => setIsSubmit(true)}
-              className={classes.submitButton} type="submit">Update</Button>
-    </div>
+    <SaveAndSubmitButtons handleSave={() => setIsSubmit(false)} handleSubmit={() => setIsSubmit(true)} fullWidth/>
+
   </form>
 }
 

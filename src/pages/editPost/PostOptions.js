@@ -14,7 +14,6 @@ const useStyles = makeStyles(theme => ({
     color: theme.palette.common.white,
     "&:hover": {backgroundColor: theme.palette.primary.light,}
   },
-
   divider: {marginTop: theme.spacing(1), marginBottom: theme.spacing(1)},
 }))
 

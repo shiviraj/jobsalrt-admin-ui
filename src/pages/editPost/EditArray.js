@@ -1,6 +1,8 @@
 import React, {useState} from 'react';
 import {makeStyles} from "@material-ui/core/styles";
-import {Box, Button, FilledInput, IconButton} from "@material-ui/core";
+import {Button, FilledInput, IconButton, Paper} from "@material-ui/core";
+import {ArrowDownward, ArrowUpward, Close} from "@material-ui/icons";
+import SaveAndSubmitButtons from "./SaveAndSubmitButtons";
 
 const useStyles = makeStyles(theme => ({
   root: {margin: theme.spacing(1)},
@@ -9,11 +11,6 @@ const useStyles = makeStyles(theme => ({
     width: "100%",
     justifyContent: "space-evenly",
   },
-  table: {
-    padding: theme.spacing(1),
-    "& > tr > td": {}
-  },
-  addHeader: {transform: 'rotate(45deg)'},
   cell: {
     border: `1px solid ${theme.palette.grey[500]}`,
     backgroundColor: theme.palette.common.white,
@@ -35,12 +32,6 @@ const useStyles = makeStyles(theme => ({
     display: "flex",
     justifyContent: "flex-end",
     margin: theme.spacing(1)
-  },
-  buttonContainer: {
-    display: "flex", justifyContent: "center",
-  },
-  submitButton: {
-    margin: theme.spacing(2)
   }
 }))
 
@@ -91,30 +82,28 @@ const EditArray = ({keyName, post, setPost, triggerSubmit}) => {
   }
 
   return (<div className={classes.root}>
-    <Box className={classes.table}>
-      {list.map((value, index) => {
-        return <div className={classes.row} key={`key-${index}`}><
-          FilledInput className={classes.cell} value={value} multiline fullWidth
-                      onChange={(event) => updateListItem(index, event.target.value)}/>
-          <div className={`${classes.actionCell} ${classes.cell}`}>
-            <IconButton size="small" className={classes.button}
-                        onClick={() => removeRow(index)}>&#x2715;</IconButton>
-            <IconButton size="small" className={classes.button} onClick={() => moveDown(index)}>&darr;</IconButton>
-            <IconButton size="small" className={classes.button} onClick={() => moveUp(index)}>&uarr;</IconButton>
+    <Paper>
+      {
+        list.map((value, index) => {
+          return <div className={classes.row} key={`key-${index}`}>
+            <FilledInput className={classes.cell} value={value} multiline fullWidth
+                         onChange={(event) => updateListItem(index, event.target.value)}/>
+            <div className={`${classes.actionCell} ${classes.cell}`}>
+              <IconButton className={classes.button} onClick={() => removeRow(index)}><Close/></IconButton>
+              <IconButton className={classes.button} onClick={() => moveDown(index)}><ArrowDownward/></IconButton>
+              <IconButton className={classes.button} onClick={() => moveUp(index)}><ArrowUpward/></IconButton>
+            </div>
           </div>
-        </div>
-      })
+        })
       }
-    </Box>
+    </Paper>
+
     <div className={classes.addRowButton}>
       <Button size="small" color="primary" variant="contained" onClick={handleAddRow}>Add Row</Button>
     </div>
-    <div className={classes.buttonContainer}>
-      <Button size="large" color="primary" variant="contained" onClick={handleSavePost}
-              className={classes.submitButton}>Save</Button>
-      <Button size="large" color="primary" variant="contained" onClick={handleUpdatePost}
-              className={classes.submitButton}>Update</Button>
-    </div>
+
+    <SaveAndSubmitButtons handleSave={handleSavePost} handleSubmit={handleUpdatePost}/>
+
   </div>)
 };
 

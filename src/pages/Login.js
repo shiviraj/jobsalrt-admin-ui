@@ -33,14 +33,8 @@ const useStyles = makeStyles((theme) => ({
     display: "flex",
     flexDirection: "column"
   },
-  primaryButton: {
-    visibility: "hidden"
-  },
   button: {
-    alignSelf: "center",
-    width: '30%',
     marginTop: theme.spacing(1),
-    visibility: "visible"
   },
   error: {color: "red"}
 }));
@@ -65,9 +59,6 @@ const Login = () => {
 
   return (<div className={classes.root} ref={rootRef}>
     <Modal
-      disablePortal
-      disableEnforceFocus
-      disableAutoFocus
       open
       className={classes.modal}
       container={() => rootRef.current}
@@ -77,7 +68,7 @@ const Login = () => {
         <Typography variant="subtitle1" className={classes.error}>{error ? error : ''}</Typography>
         <FormInput type="email" label="Email" onChange={setEmail} required/>
         <FormInput type="password" label="Password" onChange={setPwd} required/>
-        <Button variant="contained" size="large" color="primary" className={classes.button}
+        <Button variant="contained" size="large" color="primary" className={classes.button} fullWidth
                 disabled={email === "" || password === ""} type="submit">Log In</Button>
       </form>
     </Modal>

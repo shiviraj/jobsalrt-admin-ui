@@ -1,6 +1,8 @@
 import React, {useState} from 'react';
 import {makeStyles} from "@material-ui/core/styles";
-import {Box, Button, FilledInput, IconButton, TextField, Typography} from "@material-ui/core";
+import {Button, FilledInput, IconButton, Paper, TextField, Typography} from "@material-ui/core";
+import {Add, ArrowDownward, ArrowUpward, Close} from "@material-ui/icons";
+import SaveAndSubmitButtons from "./SaveAndSubmitButtons";
 
 const useStyles = makeStyles(theme => ({
   root: {margin: theme.spacing(1)},
@@ -9,11 +11,6 @@ const useStyles = makeStyles(theme => ({
     width: "100%",
     justifyContent: "space-evenly",
   },
-  table: {
-    padding: theme.spacing(1),
-    "& > tr > td": {}
-  },
-  addHeader: {transform: 'rotate(45deg)'},
   cell: {
     border: `1px solid ${theme.palette.grey[500]}`,
     backgroundColor: theme.palette.common.white,
@@ -21,27 +18,20 @@ const useStyles = makeStyles(theme => ({
   },
   actionCell: {
     display: "flex",
-    width: theme.spacing(25),
+    width: theme.spacing(30),
     justifyContent: "space-around",
     alignItems: "center",
     border: `1px solid ${theme.palette.grey[500]}`,
   },
   button: {
-    paddingRight: theme.spacing(1),
     margin: theme.spacing(.1),
-    paddingLeft: theme.spacing(1),
+    padding: theme.spacing(.5)
   },
   addRowButton: {
     display: "flex",
     justifyContent: "flex-end",
     margin: theme.spacing(1)
   },
-  buttonContainer: {
-    display: "flex", justifyContent: "center",
-  },
-  submitButton: {
-    margin: theme.spacing(2)
-  }
 }))
 
 const removeEmptyRow = (obj) => {
@@ -117,51 +107,48 @@ const EditObject = ({keyName, post, setPost, triggerSubmit}) => {
   }
 
   return (<div className={classes.root}>
-    <Box className={classes.table}>
-      <b>
-        <div className={classes.row}>
-          {obj.header.length !== 0 ? obj.header.map((value, index) => {
-              return <FilledInput className={classes.cell} value={value} key={`key-${index}`} multiline fullWidth
-                                  onChange={(event) => updateHeader(index, event.target.value)}/>
-            })
-            :
-            <Typography className={classes.cell} align="center" variant="h5">Header</Typography>
-          }
-          <div
-            className={`${classes.actionCell} ${classes.cell}`}>
-            <IconButton onClick={removeHeader}>&#x2715;</IconButton>
-            <IconButton className={classes.addHeader} onClick={addHeader}>&#x2715;</IconButton>
-          </div>
+    <Paper>
+      <div className={classes.row}>
+        {obj.header.length !== 0 ? obj.header.map((value, index) => {
+            return <FilledInput className={classes.cell} value={value} key={`key-${index}`} multiline fullWidth
+                                onChange={(event) => updateHeader(index, event.target.value)}/>
+          })
+          :
+          <Typography className={classes.cell} align="center" variant="h5">Header</Typography>
+        }
+        <div className={`${classes.actionCell} ${classes.cell}`}>
+          <IconButton className={classes.button} onClick={removeHeader}><Close fontSize="large"/></IconButton>
+          <IconButton className={classes.button} onClick={addHeader}><Add fontSize="large"/></IconButton>
         </div>
-      </b>
-      {obj.body.map((row, rowIndex) => (
-        <div className={classes.row} key={rowIndex}>
-          {row.map((value, colIndex) => {
-            return <FilledInput className={classes.cell} value={value}
-                                key={`cell-${rowIndex}-${colIndex}`} multiline fullWidth
-                                onChange={(event) => updateBody(rowIndex, colIndex, event.target.value)}/>
-          })}
-          <div className={`${classes.actionCell} ${classes.cell}`}>
-            <IconButton size="small" className={classes.button}
-                        onClick={() => removeRow(rowIndex)}>&#x2715;</IconButton>
-            <IconButton size="small" className={classes.button} onClick={() => moveDown(rowIndex)}>&darr;</IconButton>
-            <IconButton size="small" className={classes.button} onClick={() => moveUp(rowIndex)}>&uarr;</IconButton>
+      </div>
+
+      {
+        obj.body.map((row, rowIndex) => (
+          <div className={classes.row} key={rowIndex}>
+            {row.map((value, colIndex) => {
+              return <FilledInput className={classes.cell} value={value}
+                                  key={`cell-${rowIndex}-${colIndex}`} multiline fullWidth
+                                  onChange={(event) => updateBody(rowIndex, colIndex, event.target.value)}/>
+            })}
+            <div className={`${classes.actionCell} ${classes.cell}`}>
+              <IconButton className={classes.button} onClick={() => removeRow(rowIndex)}><Close/></IconButton>
+              <IconButton className={classes.button} onClick={() => moveDown(rowIndex)}><ArrowDownward/></IconButton>
+              <IconButton className={classes.button} onClick={() => moveUp(rowIndex)}><ArrowUpward/></IconButton>
+            </div>
           </div>
-        </div>
-      ))}
-    </Box>
+        ))
+      }
+    </Paper>
+
     <div className={classes.addRowButton}>
       {obj.body.length === 0 &&
       <TextField label="Total Columns" variant="outlined" size="small" type="number" value={colNo}
                  onChange={(event) => setColNo(+event.target.value)}/>}
       <Button size="small" color="primary" variant="contained" onClick={handleAddRow}>Add Row</Button>
     </div>
-    <div className={classes.buttonContainer}>
-      <Button size="large" color="primary" variant="contained" onClick={handleSavePost}
-              className={classes.submitButton}>Save</Button>
-      <Button size="large" color="primary" variant="contained" onClick={handleUpdatePost}
-              className={classes.submitButton}>Update</Button>
-    </div>
+
+    <SaveAndSubmitButtons handleSave={handleSavePost} handleSubmit={handleUpdatePost}/>
+
   </div>)
 };
 

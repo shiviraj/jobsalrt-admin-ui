@@ -28,15 +28,13 @@ const useStyles = makeStyles(theme => ({
       backgroundColor: theme.palette.success.main,
     }
   },
+  title: {
+    textAlign: "justify",
+  },
   logoContainer: {
     display: 'flex',
     justifyContent: "center",
     margin: theme.spacing(1),
-  },
-  title: {
-    textAlign: "justify",
-    margin: 0,
-    padding: 0,
   },
   logo: {
     height: theme.spacing(8),
@@ -72,7 +70,7 @@ const Post = ({post}) => {
   const classes = useStyles()
   const [open, setOpen] = useState(false);
 
-  const boxBackground = {
+  const boxBackgrounds = {
     NOT_VERIFIED: classes.error,
     VERIFIED: classes.success,
     DISABLED: classes.disabled
@@ -86,13 +84,13 @@ const Post = ({post}) => {
       })
   }
 
-  return <Box m={0.5} p={1} className={`${classes.root} ${boxBackground[post.status]}`}>
-    <div>
-      <Typography variant="h6" className={classes.title}>{post.name}</Typography>
-    </div>
+  return <Box m={0.5} p={1} className={`${classes.root} ${boxBackgrounds[post.status]}`}>
+    <Typography variant="h6" className={classes.title}>{post.name}</Typography>
+
     <div className={classes.logoContainer}>
       <img className={classes.logo} src={post.postLogo} alt={post.postLogo}/>
     </div>
+
     <div>
       {post.advtNo && <Typography variant="body1"><b>Advt No :</b> &nbsp; {post.advtNo} </Typography>}
       <Typography variant="body1"><b>Form Type :</b> &nbsp; {post.formType} </Typography>
@@ -102,17 +100,17 @@ const Post = ({post}) => {
       {post.qualification &&
       <Typography variant="body1"><b>Qualification :</b> &nbsp; {post.qualification} </Typography>}
       {post.location && <Typography variant="body1"><b>Location :</b> &nbsp; {post.location} </Typography>}
-      {post.ageLimit && <Typography variant="body1"><b>Age Limit :</b> &nbsp; {post.ageLimit} </Typography>}
       {post.createdAt && <Typography variant="body1"><b>Created At :</b> &nbsp; {post.createdAt} </Typography>}
       {post.postUpdateDate &&
       <Typography variant="body1"><b>Post Update Date :</b> &nbsp; {post.postUpdateDate} </Typography>}
       <Typography variant="body1"><b>Total Views :</b> &nbsp; {post.totalViews} </Typography>
+
       <div className={classes.buttonContainer}>
-        <Button variant="contained" onClick={() => setOpen(true)}>Delete</Button>
-        <Button variant="contained" color="primary" component="a"
-                href={`/posts/${post.url}`}>Edit</Button>
+        <Button variant="contained" className={classes.deleteButton} onClick={() => setOpen(true)}>Delete</Button>
+        <Button variant="contained" color="primary" component="a" href={`/posts/${post.url}`}>Edit</Button>
       </div>
     </div>
+
     <Modal open={open} onClose={() => setOpen(false)}>
       <div className={classes.modal}>
         <Typography variant="h5">Do you really want to delete?</Typography>
@@ -122,6 +120,7 @@ const Post = ({post}) => {
         </div>
       </div>
     </Modal>
+
   </Box>
 }
 

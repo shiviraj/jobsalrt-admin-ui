@@ -2,13 +2,14 @@ import React, {useState} from "react";
 import {makeStyles} from "@material-ui/core/styles";
 import {Button, Divider, FilledInput, Tab, Tabs} from "@material-ui/core";
 import EditObject from "./EditObject";
+import SaveAndSubmitButtons from "./SaveAndSubmitButtons";
 
 
 const useStyles = makeStyles(theme => ({
   root: {
-    backgroundColor: theme.palette.common.white,
-    paddingTop: theme.spacing(2),
-    "& > *": {paddingLeft: theme.spacing(2), paddingRight: theme.spacing(2)}
+    // backgroundColor: theme.palette.common.white,
+    // paddingTop: theme.spacing(2),
+    // "& > *": {paddingLeft: theme.spacing(2), paddingRight: theme.spacing(2)}
   },
   header: {
     display: "flex",
@@ -32,14 +33,6 @@ const useStyles = makeStyles(theme => ({
     "&:hover": {
       backgroundColor: theme.palette.error.dark,
     }
-  },
-  buttonContainer: {
-    display: "flex",
-    justifyContent: "center",
-    margin: theme.spacing(2)
-  },
-  submitButton: {
-    margin: theme.spacing(2)
   },
 }));
 
@@ -81,12 +74,11 @@ const EditOthersDetails = ({post, setPost, triggerSubmit}) => {
     triggerSubmit()
   }
 
+  const handleTabChange = (e, value) => setActiveTab(value);
+
   return <div>
     <div className={classes.header}>
-      <Tabs value={activeTab}
-            indicatorColor="primary"
-            textColor="primary"
-            onChange={(e, value) => setActiveTab(value)}>
+      <Tabs value={activeTab} indicatorColor="primary" textColor="primary" onChange={handleTabChange}>
         {Object.keys(others).map((key, index) => <Tab key={key} label={key}/>)}
       </Tabs>
       <Button color="primary" variant="contained" className={classes.addButton} onClick={addNewObject}>
@@ -94,33 +86,28 @@ const EditOthersDetails = ({post, setPost, triggerSubmit}) => {
       </Button>
     </div>
     <Divider className={classes.divider}/>
+
     {
       Object.keys(others).map((keyName, index) => {
-        return (activeTab === index) ? <div className={classes.root} key={keyName}>
+        return (activeTab === index) &&
+          <div key={keyName}>
             <div className={classes.deleteButtonContainer}>
               <Button className={classes.delete} variant="contained" onClick={() => deleteObject(keyName)}>
                 Delete Object
               </Button>
             </div>
-            <FilledInput className={classes.title} value={keyName}
-                         multiline fullWidth
-                         onChange={(e) => updateKey(keyName, e.target.value)}
-            />
+            <FilledInput className={classes.title} value={keyName} multiline fullWidth
+                         onChange={(e) => updateKey(keyName, e.target.value)}/>
             <Divider className={classes.divider}/>
+
             <EditObject keyName={keyName} post={others} setPost={setOthers} triggerSubmit={updateOthersObj}/>
             <Divider className={classes.divider}/>
           </div>
-          : undefined
       })
     }
-    <div className={classes.buttonContainer}>
-      <Button size="large" color="primary" variant="contained" fullWidth
-              onClick={handleSavePost}
-              className={classes.submitButton}>Save</Button>
-      <Button size="large" color="primary" variant="contained" fullWidth
-              onClick={handleUpdatePost}
-              className={classes.submitButton}>Update</Button>
-    </div>
+
+    <SaveAndSubmitButtons handleSave={handleSavePost} handleSubmit={handleUpdatePost} fullWidth/>
+
   </div>
 }
 
