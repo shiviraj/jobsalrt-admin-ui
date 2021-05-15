@@ -1,8 +1,8 @@
 import React from 'react';
-import Loader from "../components/Loader";
+import ButtonWithLoader from "../components/ButtonWithLoader";
 
 const HomeRoute = () => {
-  return <div style={{margin: "48px", border: '1px solid red'}}><Loader/>< /div>
+  return <div style={{margin: "48px"}}><ButtonWithLoader isLoading={true}/>< /div>
 };
 
 export default HomeRoute;
