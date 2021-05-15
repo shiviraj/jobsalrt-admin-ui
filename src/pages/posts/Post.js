@@ -67,7 +67,7 @@ const useStyles = makeStyles(theme => ({
 }));
 
 
-const Post = ({post}) => {
+const Post = ({post, triggerReload}) => {
   const classes = useStyles()
   const [open, setOpen] = useState(false);
   const [isDeleting, setIsDeleting] = useState(false);
@@ -81,7 +81,10 @@ const Post = ({post}) => {
   const handleDelete = () => {
     setIsDeleting(true)
     fetchApi({type: "DELETE_POST", payload: {url: post.url}})
-      .then(() => setOpen(false))
+      .then(() => {
+        setOpen(false)
+        triggerReload()
+      })
       .catch(() => ({}))
       .then(() => setIsDeleting(false))
   }

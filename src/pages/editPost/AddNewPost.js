@@ -20,7 +20,7 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-const AddNewPost = ({setPage}) => {
+const AddNewPost = ({triggerReload}) => {
   const classes = useStyles();
   const [source, setSource] = useState("")
   const [open, setOpen] = useState(false);
@@ -32,7 +32,7 @@ const AddNewPost = ({setPage}) => {
     fetchApi({type: "ADD_POST", payload: {source}})
       .then(p => {
         setOpen(false)
-        setPage(1)
+        triggerReload()
       })
       .catch(() => ({}))
       .then(() => setIsLoading(false))

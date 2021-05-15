@@ -40,11 +40,11 @@ const TitleBar = ({page, count}) => {
   </div>
 }
 
-const PostsContents = ({posts}) => {
+const PostsContents = ({posts, triggerReload}) => {
   const classes = useStyles()
   if (!posts) return Array(12).fill("").map((_, index) => <PostSkeleton key={`key-${index}`}/>)
   return posts && posts.length
-    ? posts.map((post, index) => <Post post={post} key={`${post.source}_${index}`}/>)
+    ? posts.map((post, index) => <Post post={post} key={`${post.source}_${index}`} triggerReload={triggerReload}/>)
     : <Typography variant="h1" className={classes.noPost}>No Post Found...</Typography>
 }
 
@@ -63,11 +63,19 @@ const PostContainer = ({filters}) => {
       .catch(e => ({}))
   };
 
-  useEffect(() => {
+  const getPostsPageCount = () => {
     fetchApi({type: "GET_POSTS_PAGE_COUNT", payload: {filters, ...sort}})
       .then((pageCount) => setPageCount(pageCount))
       .catch(e => ({}))
+  };
 
+  const triggerReload = () => {
+    getPostsPageCount()
+    getPostsBasedOnFiltersAndSort(1).then(() => setPage(1))
+  }
+
+  useEffect(() => {
+    getPostsPageCount();
     getPostsBasedOnFiltersAndSort(1).then(() => setPage(1))
   }, [filters, sort])
 
@@ -78,13 +86,13 @@ const PostContainer = ({filters}) => {
   return <div className={classes.root}>
     <div className={classes.titleContainer}>
       <TitleBar page={page} count={pageCount}/>
-      <AddNewPost setPage={setPage}/>
+      <AddNewPost triggerReload={triggerReload}/>
     </div>
     <SortBy sort={sort} setSort={setSort}/>
     <Divider className={classes.divider}/>
 
     <div className={classes.postContainer}>
-      <PostsContents posts={posts}/>
+      <PostsContents posts={posts} triggerReload={triggerReload}/>
     </div>
 
     <Divider className={classes.divider}/>

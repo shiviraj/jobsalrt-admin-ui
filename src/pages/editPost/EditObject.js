@@ -42,7 +42,7 @@ const removeEmptyRow = (obj) => {
 const EditObject = ({keyName, post, setPost, triggerSubmit}) => {
   const classes = useStyles()
   const [obj, setObj] = useState(removeEmptyRow(post[keyName] || {header: [], body: []}));
-  const [colNo, setColNo] = useState(0);
+  const [colNo, setColNo] = useState(2);
   const [isUpdating, setIsUpdating] = useState(false);
 
   const updateObj = () => setObj({...obj});
@@ -74,7 +74,8 @@ const EditObject = ({keyName, post, setPost, triggerSubmit}) => {
   }
 
   const addHeader = () => {
-    obj.header = Array(obj.body[0].length).fill("");
+    const cols = obj.body.length ? obj.body[0].length : colNo
+    obj.header = Array(cols).fill("");
     updateObj();
   }
 
